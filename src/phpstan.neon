@@ -1,0 +1,20 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+        - config
+        - database
+        - routes
+    level: 5
+
+    parallel:
+        maximumNumberOfProcesses: 0
+
+    ignoreErrors:
+        - '#PHP Startup: Use of mbstring.internal_encoding is deprecated#'
+        - '#has no @return tag#'
+        - '#Undefined variable: \$this#'
+
+    reportUnmatchedIgnoredErrors: false
