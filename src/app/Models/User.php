@@ -57,11 +57,6 @@ class User extends Authenticatable
         return $this->role === self::ROLE_USER;
     }
 
-    public function shifts()
-    {
-        return $this->hasMany(Shift::class);
-    }
-
     public function attendances()
     {
         return $this->hasMany(Attendance::class);

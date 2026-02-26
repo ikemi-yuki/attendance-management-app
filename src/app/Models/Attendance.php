@@ -11,7 +11,6 @@ class Attendance extends Model
 
     protected $fillable = [
         'user_id',
-        'shift_id',
         'work_date',
         'clock_in',
         'clock_out',
@@ -27,11 +26,6 @@ class Attendance extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function shift()
-    {
-        return $this->belongsTo(Shift::class);
     }
 
     public function breaks()
