@@ -9,7 +9,7 @@ class LoginResponse implements LoginResponseContract
 {
     public function toResponse($request)
     {
-        if (auth()->user()->role === User::ROLE_ADMIN) {
+        if ($request->routeIs('admin.login')) {
             return redirect()->intended('/admin/attendance/list');
         }
 

@@ -18,9 +18,16 @@ class LoginController extends Controller
 
     public function store(LoginRequest $request)
     {
-        $credentials['role'] = User::ROLE_ADMIN;
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => User::ROLE_ADMIN,
+        ];
 
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (!Auth::guard('admin')->attempt(
+            $credentials,
+            $request->boolean('remember')
+        )) {
             throw ValidationException::withMessages([
                 'email' => 'ログイン情報が登録されていません',
             ]);
@@ -28,6 +35,16 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended('/admin/attendance/list');
+        return redirect()->intended(route('admin.attendance.list'));
+    }
+
+    public function destroy(Request $request)
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login');
     }
 }

@@ -1,7 +1,6 @@
 .register-form__content {
-    margin: 0 auto;
+    margin: 96px auto;
     max-width: 1540px;
-    margin-top: 96px;
 }
 
 .register-form__header {
@@ -64,7 +63,6 @@
 
 .login__link {
     margin-top: 25px;
-    margin-bottom: 40px;
     text-align: center;
 }
 
@@ -76,7 +74,7 @@
 
 @media screen and (min-width:768px) and (max-width: 850px) {
     .register-form__content {
-        margin-top: 35px;
+        margin-top: 40px;
     }
 
     .register-form__header {

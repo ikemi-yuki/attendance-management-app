@@ -1,0 +1,85 @@
+.clock {
+    margin: 0 auto;
+    padding: 200px 0;
+    text-align: center;
+}
+
+.clock__condition {
+    width: 100px;
+    height: 40px;
+    padding: 6px;
+    margin: 0 auto;
+    border-radius: 50px;
+    border: none;
+    background: #c8c8c8;
+    font-size: 18px;
+    font-weight: bold;
+    color: #696969;
+}
+
+.clock__date {
+    margin: 30px auto 10px;
+    font-size: 40px;
+}
+
+.clock__time {
+    margin: 0;
+    font-size: 80px;
+    font-weight: bold;
+}
+
+.clock__form-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+}
+
+.clock-in__form,
+.clock-out__form {
+    width: 221px;
+    height: 77px;
+    margin-top: 80px;
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    background: #000;
+    cursor: pointer;
+}
+
+.clock-in__form-input,
+.clock-out__form-input {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.break-start__form,
+.break-end__form {
+    width: 221px;
+    height: 77px;
+    margin-top: 80px;
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.break-start__form-input,
+.break-end__form-input {
+    color: #000;
+    font-size: 32px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.clock-out__text {
+    margin-top: 80px;
+    font-size: 26px;
+    font-weight: bold;
+}
