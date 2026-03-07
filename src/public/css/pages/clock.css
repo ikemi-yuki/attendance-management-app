@@ -1,6 +1,6 @@
 .clock {
     margin: 0 auto;
-    padding: 200px 0;
+    padding-top: 180px;
     text-align: center;
 }
 
@@ -38,7 +38,7 @@
 .clock-out__form {
     width: 221px;
     height: 77px;
-    margin-top: 80px;
+    margin-top: 70px;
     padding: 12px;
     border: none;
     border-radius: 20px;
@@ -60,7 +60,7 @@
 .break-end__form {
     width: 221px;
     height: 77px;
-    margin-top: 80px;
+    margin-top: 70px;
     padding: 12px;
     border: none;
     border-radius: 20px;
@@ -79,7 +79,56 @@
 }
 
 .clock-out__text {
-    margin-top: 80px;
+    margin-top: 70px;
     font-size: 26px;
     font-weight: bold;
+}
+
+@media screen and (min-width:768px) and (max-width: 850px) {
+    .clock {
+        padding: 150px 0;
+    }
+
+    .clock__condition {
+        width: 90px;
+        height: 35px;
+        padding: 4px;
+        font-size: 17px;
+    }
+
+    .clock__date {
+        margin: 25px auto 5px;
+        font-size: 36px;
+    }
+
+    .clock__time {
+        font-size: 70px;
+    }
+
+    .clock__form-wrapper {
+        gap: 60px;
+    }
+
+    .clock-in__form,
+    .clock-out__form,
+    .break-start__form,
+    .break-end__form {
+        width: 180px;
+        height: 70px;
+        margin-top: 55px;
+        padding: 12px;
+        border-radius: 20px;
+    }
+
+    .clock-in__form-input,
+    .clock-out__form-input,
+    .break-start__form-input,
+    .break-end__form-input {
+        font-size: 28px;
+    }
+
+    .clock-out__text {
+        margin-top: 55px;
+        font-size: 23px;
+    }
 }

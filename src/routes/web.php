@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\StaffAttendanceController as AdminStaffAttendanceController;
 use App\Http\Controllers\User\ClockController as UserClockController;
 use App\Http\Controllers\User\AttendanceController as UserAttendanceController;
 use App\Http\Controllers\User\BreakController as UserBreakController;
-use App\Http\Controllers\Admin\StaffAttendanceController as AdminStaffAttendanceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,19 +35,25 @@ Route::prefix('admin')->group(function () {
 Route::middleware(['auth'])
     ->prefix('attendance')
     ->group(function () {
-    Route::get('/', [UserClockController::class, 'show'])->name('clock');
+        Route::get('/', [UserClockController::class, 'show'])->name('clock');
 
-    Route::post('/clock-in', [UserAttendanceController::class, 'clockIn'])->name('attendance.clock-in');
+        Route::post('/clock-in', [UserAttendanceController::class, 'clockIn'])->name('attendance.clock-in');
 
-    Route::post('/clock-out', [UserAttendanceController::class, 'clockOut'])->name('attendance.clock-out');
+        Route::post('/clock-out', [UserAttendanceController::class, 'clockOut'])->name('attendance.clock-out');
 
-    Route::post('/break-start', [UserBreakController::class, 'start'])->name('attendance.break-start');
+        Route::post('/break-start', [UserBreakController::class, 'start'])->name('attendance.break-start');
 
-    Route::post('/break-end', [UserBreakController::class, 'end'])->name('attendance.break-end');
+        Route::post('/break-end', [UserBreakController::class, 'end'])->name('attendance.break-end');
+
+        Route::get('/list', [UserAttendanceController::class, 'index'])->name('attendance.index');
+
+        Route::get('/detail/{id}', [UserAttendanceController::class, 'show'])->name('attendance.show');
 });
 
 Route::middleware(['auth:admin','admin'])
     ->prefix('admin')
     ->group(function () {
-        Route::get('/attendance/list', [AdminStaffAttendanceController::class, 'index'])->name('admin.attendance.list');
+        Route::get('/attendance/list', [AdminStaffAttendanceController::class, 'index'])->name('admin.attendance.index');
+
+        Route::get('/attendance/{id}', [AdminStaffAttendanceController::class, 'show'])->name('admin.attendance.show');
 });

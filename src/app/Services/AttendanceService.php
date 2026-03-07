@@ -16,8 +16,10 @@ class AttendanceService
             ->first();
     }
 
-    public function getStatus($attendance)
+    public function getStatus()
     {
+        $attendance = $this->getTodayAttendance();
+
         if (!$attendance) {
             return 'before';
         }
@@ -26,9 +28,9 @@ class AttendanceService
             return 'finished';
         }
 
-        $onBreak = $attendance->breaks()
+        $onBreak = $attendance->breaks
             ->whereNull('break_end')
-            ->exists();
+            ->isNotEmpty();
 
         return $onBreak ? 'on_break' : 'working';
     }
@@ -59,5 +61,22 @@ class AttendanceService
         ]);
 
         return $attendance;
+    }
+
+    public function getAttendancesByDate(Carbon $date)
+    {
+        return Attendance::with(['user', 'breaks'])
+            ->whereDate('work_date', $date)
+            ->get();
+    }
+
+    public function getMonthlyAttendances($userId, Carbon $start, Carbon $end)
+    {
+        return Attendance::where('user_id', $userId)
+            ->whereBetween('work_date', [$start, $end])
+            ->get()
+            ->keyBy(fn ($attendance) =>
+                $attendance->work_date->toDateString()
+            );
     }
 }

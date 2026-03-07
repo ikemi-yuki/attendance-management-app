@@ -13,7 +13,7 @@
                     <a class="nav__link" href="{{ route('clock') }}">勤怠</a>
                 </li>
                 <li class="nav__item">
-                    <a class="nav__link" href="">勤怠一覧</a>
+                    <a class="nav__link" href="{{ route('attendance.index') }}">勤怠一覧</a>
                 </li>
                 <li class="nav__item">
                     <a class="nav__link" href="">申請</a>
@@ -30,7 +30,7 @@
 @endsection
 
 @section('content')
-    @yield('page')
-
-    @stack('scripts')
+    <div class="page-container">
+        @yield('page')
+    </div>
 @endsection

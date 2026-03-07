@@ -17,13 +17,8 @@ class ClockController extends Controller
 
     public function show()
     {
-        $attendance = $this->attendanceService->getTodayAttendance();
+        $status = $this->attendanceService->getStatus();
 
-        $status = $this->attendanceService->getStatus($attendance);
-
-        return view('user.attendances.clock', compact(
-            'attendance',
-            'status'
-        ));
+        return view('user.attendances.clock', compact('status'));
     }
 }

@@ -29,7 +29,7 @@
 @endsection
 
 @section('content')
-    @yield('page')
-
-    @stack('scripts')
+    <div class="page-container">
+        @yield('page')
+    </div>
 @endsection

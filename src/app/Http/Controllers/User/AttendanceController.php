@@ -4,14 +4,21 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Services\DateService;
 use App\Services\AttendanceService;
+use App\ViewModels\MonthlyAttendanceRowViewModel;
 
 class AttendanceController extends Controller
 {
-    private $attendanceService;
+    private DateService $dateService;
+    private AttendanceService $attendanceService;
 
-    public function __construct(AttendanceService $attendanceService)
-    {
+    public function __construct(
+        DateService $dateService,
+        AttendanceService $attendanceService
+    ) {
+        $this->dateService = $dateService;
         $this->attendanceService = $attendanceService;
     }
 
@@ -27,5 +34,41 @@ class AttendanceController extends Controller
         $this->attendanceService->clockOut();
 
         return redirect()->route('clock');
+    }
+
+    public function index(Request $request)
+    {
+        $month = $this->dateService->resolveMonth($request->month);
+
+        $months = $this->dateService->getPreviousNextMonths($month);
+
+        [$start, $end] = $this->dateService->getMonthRange($month);
+
+        $dates = $this->dateService->getDatesInMonth($start, $end);
+
+        $attendances = $this->attendanceService->getMonthlyAttendances(Auth::id(), $start, $end);
+
+        $rows = collect($dates)->map(
+            fn ($date) => (new MonthlyAttendanceRowViewModel(
+                $date,
+                $attendances[$date->toDateString()] ?? null
+            ))->toArray()
+        );
+
+        return view('user.attendances.index', [
+            'month' => $month,
+            'previousUrl' => route('attendance.index', [
+                'month' => $months['previous']->format('Y-m')
+            ]),
+            'nextUrl' => route('attendance.index', [
+                'month' => $months['next']->format('Y-m')
+            ]),
+            'rows' => $rows,
+        ]);
+    }
+
+    public function show()
+    {
+        view('user.attendances.show');
     }
 }

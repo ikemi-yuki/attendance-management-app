@@ -1,0 +1,20 @@
+.page-title {
+    padding-top: 90px;
+}
+
+.page-title__text {
+    text-align: left;
+    padding-left: 15px;
+    border-left: 8px solid #000;
+    font-size: 30px;
+}
+
+@media screen and (min-width:768px) and (max-width: 850px) {
+    .page-title {
+        padding-top: 80px;
+    }
+
+    .page-title__text {
+        font-size: 26px;
+    }
+}

@@ -1,0 +1,47 @@
+.attendance-list__table-header {
+    margin-top: 50px;
+    padding: 0 25px;
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attendance-list__date-link {
+    font-size: 16px;
+    font-weight: bold;
+    color: #737373;
+    text-decoration: none;
+}
+
+.attendance-list__date {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.calendar-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+@media screen and (min-width:768px) and (max-width: 850px) {
+    .attendance-list__table-header {
+        margin-top: 40px;
+        padding: 0 20px;
+        height: 50px;
+    }
+
+    .attendance-list__date {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .calendar-icon {
+        width: 23px;
+        height: 23px;
+    }
+}

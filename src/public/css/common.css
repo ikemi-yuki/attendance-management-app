@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .header {
     background: #000;
     height: 82px;
@@ -15,6 +20,17 @@
     display: block;
 }
 
+.page-container {
+    background: #f0eff2;
+    text-align: center;
+    height: 100vh;
+}
+
+.page-inner {
+    width: 900px;
+    margin: 0 auto;
+}
+
 @media screen and (min-width:768px) and (max-width: 850px) {
     .header {
         height: 60px;
@@ -28,5 +44,10 @@
     .header__logo-img {
         width: 259px;
         height: 25px;
+    }
+
+    .page-inner {
+        width: 650px;
+        margin: 0 auto;
     }
 }

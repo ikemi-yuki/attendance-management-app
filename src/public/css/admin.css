@@ -1,7 +1,3 @@
-.main {
-    background: #f0eff2;
-}
-
 .header__container {
     max-width: 1512px;
     margin: 0 auto;
@@ -62,7 +58,7 @@
     }
 
     .header-nav {
-        width: 58%;
+        width: 60%;
         margin: 0 0 0 auto;
     }
 

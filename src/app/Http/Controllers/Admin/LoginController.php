@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.attendance.list'));
+        return redirect()->intended(route('admin.attendance.index'));
     }
 
     public function destroy(Request $request)

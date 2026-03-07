@@ -37,4 +37,22 @@ class Attendance extends Model
     {
         return $this->hasMany(AttendanceRequest::class);
     }
+
+    public function getTotalBreakSecondsAttribute(): int
+    {
+        return $this->breaks
+        ->whereNotNull('break_start')
+        ->whereNotNull('break_end')
+        ->sum(fn ($break) =>
+            $break->break_start->diffInSeconds($break->break_end)
+        );
+    }
+
+    public function getWorkSecondsAttribute(): int
+    {
+        if (!$this->clock_in || !$this->clock_out) {
+            return 0;
+        }
+        return $this->clock_in->diffInSeconds($this->clock_out) - $this->total_break_seconds;
+    }
 }
