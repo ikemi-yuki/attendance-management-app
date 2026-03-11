@@ -21,10 +21,12 @@
 }
 
 .table__header {
+    padding: 5px 30px;
     height: 31px;
 }
 
 .table__data {
+    padding: 5px;
     height: 33px;
 }
 
@@ -35,10 +37,15 @@
 
 .table__link--disabled {
     pointer-events: none;
+    cursor: default;
 }
 
 @media screen and (min-width:768px) and (max-width: 850px) {
     .table {
         margin-top: 40px;
+    }
+
+    .table__header {
+        padding: 5px 20px;
     }
 }

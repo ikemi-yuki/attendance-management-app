@@ -1,0 +1,127 @@
+.table {
+    width: 100%;
+    margin-top: 50px;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    letter-spacing: 0.1em;
+    border-radius: 10px;
+}
+
+.table__inner {
+    width: 100%;
+}
+
+.table__row {
+    border-bottom: 2px solid #e1e1e1;
+    font-size: 16px;
+    font-weight: bold;
+    height: 90px;
+}
+
+.table__row:first-child {
+    height: 70px;
+}
+
+.table__row:last-child {
+    border-bottom-width: 0;
+}
+
+.table__header {
+    width: 35%;
+    padding: 0 60px;
+    color: #737373;
+    text-align: left;
+}
+
+.table__data--name {
+    padding: 30px 50px;
+    text-align: left;
+}
+
+.table__data--date {
+    display: flex;
+    gap: 150px;
+    padding: 30px 50px;
+}
+
+.table__data {
+    padding: 30px 20px;
+}
+
+.table__data-content {
+    display: flex;
+    align-items: center;
+    gap: 45px;
+}
+
+.table__data--time {
+    padding-left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+
+.table__data--text {
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.table__data-item {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+.table__data-input {
+    width: 105px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid #e1e1e1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    appearance: none;
+}
+
+.table__data-input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.table__data-textarea {
+    margin-top: 10px;
+    padding: 5px;
+    width: 316px;
+    height: 72px;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    resize: none;
+}
+
+.error {
+    font-size: 16px;
+    font-weight: lighter;
+    color: #ff0000;
+    text-align: left;
+}
+
+.pending-message {
+    margin: 25px 0;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #ff0000;
+    opacity: 0.5;
+    text-align: right;
+}
+
+@media screen and (min-width:768px) and (max-width: 850px) {
+    .table {
+        margin-top: 40px;
+    }
+
+    .table__header {
+        width: 30%;
+        padding: 0 35px;
+    }
+}

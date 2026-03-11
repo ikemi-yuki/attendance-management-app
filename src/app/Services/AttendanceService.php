@@ -79,4 +79,12 @@ class AttendanceService
                 $attendance->work_date->toDateString()
             );
     }
+
+    public function getAttendanceDetail(int $attendanceId)
+    {
+        return Attendance::with([
+            'user',
+            'breaks'
+        ])->findOrFail($attendanceId);
+    }
 }

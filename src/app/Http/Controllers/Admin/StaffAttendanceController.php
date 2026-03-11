@@ -4,21 +4,26 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateAttendanceRequest;
 use App\Services\DateService;
 use App\Services\AttendanceService;
+use App\Services\AdminAttendanceService;
 use App\ViewModels\AdminAttendanceRowViewModel;
 
 class StaffAttendanceController extends Controller
 {
     private DateService $dateService;
     private AttendanceService $attendanceService;
+    private AdminAttendanceService $adminAttendanceService;
 
     public function __construct(
         DateService $dateService,
-        AttendanceService $attendanceService
+        AttendanceService $attendanceService,
+        AdminAttendanceService $adminAttendanceService
     ) {
         $this->dateService = $dateService;
         $this->attendanceService = $attendanceService;
+        $this->adminAttendanceService = $adminAttendanceService;
     }
 
     public function index(Request $request)
@@ -45,8 +50,16 @@ class StaffAttendanceController extends Controller
         ]);
     }
 
-    public function show()
+    public function show($id)
     {
-        view('admin.attendances.show');
+        $attendance = $this->attendanceService->getAttendanceDetail($id);
+
+        return view('admin.attendances.show', compact('attendance'));
+    }
+
+    public function update(UpdateAttendanceRequest $request, $id)
+    {
+        $this->adminAttendanceService->attendanceUpdate($id, $request->validated());
+        return redirect()->route('admin.attendance.show', $id);
     }
 }

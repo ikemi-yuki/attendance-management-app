@@ -7,19 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DateService;
 use App\Services\AttendanceService;
+use App\Services\AttendanceRequestService;
 use App\ViewModels\MonthlyAttendanceRowViewModel;
 
 class AttendanceController extends Controller
 {
     private DateService $dateService;
     private AttendanceService $attendanceService;
+    private AttendanceRequestService $attendanceRequestService;
 
     public function __construct(
         DateService $dateService,
-        AttendanceService $attendanceService
+        AttendanceService $attendanceService,
+        AttendanceRequestService $attendanceRequestService
     ) {
         $this->dateService = $dateService;
         $this->attendanceService = $attendanceService;
+        $this->attendanceRequestService = $attendanceRequestService;
     }
 
     public function clockIn()
@@ -67,8 +71,18 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function show()
+    public function show($id)
     {
-        view('user.attendances.show');
+        $attendance = $this->attendanceService->getAttendanceDetail($id);
+
+        $attendanceRequest = $this->attendanceRequestService->getAttendanceRequestDetail($id);
+
+        $hasPendingRequest = $attendance->pendingRequest()->exists();
+
+        return view('user.attendances.show', compact(
+            'attendance',
+            'attendanceRequest',
+            'hasPendingRequest'
+        ));
     }
 }

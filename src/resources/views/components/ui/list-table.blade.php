@@ -11,7 +11,7 @@
                     <td class="table__data">{{ $cell }}</td>
                 @endforeach
                 <td class="table__data">
-                    <a class="table__link"{{ !$row['link'] ? 'table__link--disabled' : '' }}" href="{{ $row['link'] ?? '#' }}">
+                    <a class="table__link {{ !$row['link'] ? 'table__link--disabled' : '' }}" href="{{ $row['link'] ?? '#' }}">
                     詳細
                     </a>
                 </td>

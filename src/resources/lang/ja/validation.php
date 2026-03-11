@@ -151,5 +151,9 @@ return [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'password_confirmation' => '確認用パスワード',
+        'clock_in' => '出勤時間',
+        'clock_out' => '退勤時間',
+        'breaks.*.break_start' => '休憩時間',
+        'breaks.*.break_end' => '休憩時間',
     ],
 ];

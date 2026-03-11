@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\StaffAttendanceController as AdminStaffAttendance
 use App\Http\Controllers\User\ClockController as UserClockController;
 use App\Http\Controllers\User\AttendanceController as UserAttendanceController;
 use App\Http\Controllers\User\BreakController as UserBreakController;
+use App\Http\Controllers\User\AttendanceRequestController as UserAttendanceRequestController;
 
 
 /*
@@ -48,6 +49,8 @@ Route::middleware(['auth'])
         Route::get('/list', [UserAttendanceController::class, 'index'])->name('attendance.index');
 
         Route::get('/detail/{id}', [UserAttendanceController::class, 'show'])->name('attendance.show');
+
+        Route::post('/detail/{id}', [UserAttendanceRequestController::class, 'store'])->name('attendance.store');
 });
 
 Route::middleware(['auth:admin','admin'])
@@ -56,4 +59,6 @@ Route::middleware(['auth:admin','admin'])
         Route::get('/attendance/list', [AdminStaffAttendanceController::class, 'index'])->name('admin.attendance.index');
 
         Route::get('/attendance/{id}', [AdminStaffAttendanceController::class, 'show'])->name('admin.attendance.show');
+
+        Route::patch('/attendance/{id}', [AdminStaffAttendanceController::class, 'update'])->name('admin.attendance.update');
 });

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.user')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/components/page-title.css') }}">

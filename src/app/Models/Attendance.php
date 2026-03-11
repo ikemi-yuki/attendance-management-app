@@ -38,6 +38,12 @@ class Attendance extends Model
         return $this->hasMany(AttendanceRequest::class);
     }
 
+    public function pendingRequest()
+    {
+        return $this->hasOne(AttendanceRequest::class)
+            ->where('status', AttendanceRequest::STATUS_PENDING);
+    }
+
     public function getTotalBreakSecondsAttribute(): int
     {
         return $this->breaks
