@@ -33,15 +33,21 @@ class Attendance extends Model
         return $this->hasMany(AttendanceBreak::class);
     }
 
-    public function attendanceRequests()
+    public function attendanceCorrectRequests()
     {
-        return $this->hasMany(AttendanceRequest::class);
+        return $this->hasMany(AttendanceCorrectRequest::class);
     }
 
     public function pendingRequest()
     {
-        return $this->hasOne(AttendanceRequest::class)
-            ->where('status', AttendanceRequest::STATUS_PENDING);
+        return $this->hasOne(AttendanceCorrectRequest::class)
+            ->where('status', AttendanceCorrectRequest::STATUS_PENDING);
+    }
+
+    public function approvedRequest()
+    {
+        return $this->hasOne(AttendanceCorrectRequest::class)
+            ->where('status', AttendanceCorrectRequest::STATUS_APPROVED);
     }
 
     public function getTotalBreakSecondsAttribute(): int

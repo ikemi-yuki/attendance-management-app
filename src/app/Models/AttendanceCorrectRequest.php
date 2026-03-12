@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AttendanceRequest extends Model
+class AttendanceCorrectRequest extends Model
 {
     use HasFactory;
 
@@ -27,6 +27,8 @@ class AttendanceRequest extends Model
     protected $casts = [
         'requested_clock_in' => 'datetime',
         'requested_clock_out' => 'datetime',
+        'requested_at' => 'datetime',
+        'approved_at' => 'datetime',
     ];
 
     public function user()
@@ -46,6 +48,6 @@ class AttendanceRequest extends Model
 
     public function requestBreaks()
     {
-        return $this->hasMany(AttendanceRequestBreak::class);
+        return $this->hasMany(AttendanceCorrectRequestBreak::class);
     }
 }

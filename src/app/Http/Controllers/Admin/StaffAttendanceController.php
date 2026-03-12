@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAttendanceRequest;
 use App\Services\DateService;
 use App\Services\AttendanceService;
+use App\Services\AttendanceRequestService;
 use App\Services\AdminAttendanceService;
 use App\ViewModels\AdminAttendanceRowViewModel;
 
@@ -14,15 +15,18 @@ class StaffAttendanceController extends Controller
 {
     private DateService $dateService;
     private AttendanceService $attendanceService;
+    private AttendanceRequestService $attendanceRequestService;
     private AdminAttendanceService $adminAttendanceService;
 
     public function __construct(
         DateService $dateService,
         AttendanceService $attendanceService,
+        AttendanceRequestService $attendanceRequestService,
         AdminAttendanceService $adminAttendanceService
     ) {
         $this->dateService = $dateService;
         $this->attendanceService = $attendanceService;
+        $this->attendanceRequestService = $attendanceRequestService;
         $this->adminAttendanceService = $adminAttendanceService;
     }
 
@@ -35,7 +39,7 @@ class StaffAttendanceController extends Controller
         $attendances = $this->attendanceService->getAttendancesByDate($date);
 
         $rows = $attendances->map(
-            fn ($attendance) => (new AdminAttendanceRowViewModel($attendance))->toArray()
+            fn ($attendance) => new AdminAttendanceRowViewModel($attendance)
         );
 
         return view('admin.attendances.index', [
@@ -54,7 +58,14 @@ class StaffAttendanceController extends Controller
     {
         $attendance = $this->attendanceService->getAttendanceDetail($id);
 
-        return view('admin.attendances.show', compact('attendance'));
+        $attendanceRequest = $this->attendanceRequestService->getAttendanceRequestDetail($id);
+
+        $hasPendingRequest = $attendance->pendingRequest()->exists();
+
+        return view('admin.attendances.show', compact(
+            'attendance',
+            'attendanceRequest',
+            'hasPendingRequest'));
     }
 
     public function update(UpdateAttendanceRequest $request, $id)

@@ -11,11 +11,22 @@
         <x-ui.page-title>
             勤怠詳細
         </x-ui.page-title>
-        <x-ui.detail-edit-table
-            :action="route('admin.attendance.update', ['id' => $attendance->id])"
-            :method="method_field('PATCH')"
-            :attendance="$attendance"
-            :breaks="$attendance->breaks"
-        />
+        @if($hasPendingRequest && $attendanceRequest)
+            <x-ui.detail-view-table
+                :attendance="$attendance"
+                :attendanceRequest="$attendanceRequest"
+                :requestBreaks="$attendanceRequest->requestBreaks"
+            />
+            <p class="pending-message">
+                *承認待ちのため修正はできません。
+            </p>
+        @else
+            <x-ui.detail-edit-table
+                :action="route('admin.attendance.update', ['id' => $attendance->id])"
+                :method="method_field('PATCH')"
+                :attendance="$attendance"
+                :breaks="$attendance->breaks"
+            />
+        @endif
     </div>
 @endsection

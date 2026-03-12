@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AttendanceRequestBreak extends Model
+class AttendanceCorrectRequestBreak extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'attendance_request_id',
+        'attendance_correct_request_id',
         'attendance_break_id',
         'requested_break_start',
         'requested_break_end'
@@ -21,9 +21,9 @@ class AttendanceRequestBreak extends Model
         'requested_break_end' => 'datetime',
     ];
 
-    public function attendanceRequest()
+    public function attendanceCorrectRequest()
     {
-        return $this->belongsTo(AttendanceRequest::class);
+        return $this->belongsTo(AttendanceCorrectRequest::class);
     }
 
     public function attendanceBreak()

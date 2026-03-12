@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\Attendance;
-use App\Models\AttendanceRequest;
+use App\Models\AttendanceCorrectRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -13,13 +14,13 @@ class AttendanceRequestService
     {
         return DB::transaction(function () use ($data, $attendance) {
 
-            $attendanceRequest = AttendanceRequest::create([
+            $attendanceRequest = AttendanceCorrectRequest::create([
                 'attendance_id' => $attendance->id,
                 'user_id' => $attendance->user_id,
                 'requested_clock_in' => $data['clock_in'],
                 'requested_clock_out' => $data['clock_out'],
                 'requested_note' => $data['note'],
-                'status' => AttendanceRequest::STATUS_PENDING,
+                'status' => AttendanceCorrectRequest::STATUS_PENDING,
                 'requested_at' => now(),
             ]);
 
@@ -45,12 +46,28 @@ class AttendanceRequestService
 
     public function getAttendanceRequestDetail(int $attendanceId)
     {
-        return AttendanceRequest::with([
+        return AttendanceCorrectRequest::with([
             'user',
             'requestBreaks'
         ])
         ->where('attendance_id', $attendanceId)
-        ->where('status', AttendanceRequest::STATUS_PENDING)
+        ->where('status', AttendanceCorrectRequest::STATUS_PENDING)
         ->first();
+    }
+
+    public function getRequests($role, $status, $userId)
+    {
+        $statusValue = $status === 'approved'
+            ? AttendanceCorrectRequest::STATUS_APPROVED
+            : AttendanceCorrectRequest::STATUS_PENDING;
+
+        $query = AttendanceCorrectRequest::with('user','attendance')
+            ->where('status', $statusValue);
+
+        if ($role !== User::ROLE_ADMIN) {
+            $query->where('user_id', $userId);
+        }
+
+        return $query->latest()->get();
     }
 }

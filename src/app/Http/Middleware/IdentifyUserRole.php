@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\User;
 
-class AdminMiddleware
+class IdentifyUserRole
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth('admin')->user()->role !== User::ROLE_ADMIN) {
-            abort(403);
-        }
+        $user = auth()->guard('web')->user() ?? auth()->guard('admin')->user();
+
+        $request->attributes->set('role', $user->role);
+
         return $next($request);
     }
 }

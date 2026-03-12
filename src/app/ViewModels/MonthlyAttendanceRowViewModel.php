@@ -4,6 +4,7 @@ namespace App\ViewModels;
 
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 class MonthlyAttendanceRowViewModel
 {
@@ -12,23 +13,50 @@ class MonthlyAttendanceRowViewModel
         private ?Attendance $attendance
     ) {}
 
-    public function toArray(): array
+    private function formatSeconds(?int $seconds): string
     {
-        return [
-            'cells' => [
-                $this->date->isoFormat('MM/DD(ddd)'),
-                optional($this->attendance?->clock_in)->format('H:i') ?? '',
-                optional($this->attendance?->clock_out)->format('H:i') ?? '',
-                $this->attendance
-                    ? gmdate('H:i', $this->attendance->total_break_seconds)
-                    : '',
-                $this->attendance
-                    ? gmdate('H:i', $this->attendance->work_seconds)
-                    : '',
-            ],
-            'link' => $this->attendance
+        if (!$seconds) {
+            return '';
+        }
+
+        return CarbonInterval::seconds($seconds)
+            ->cascade()
+            ->format('%H:%I');
+    }
+
+    public function date(): string
+    {
+        return $this->date->isoFormat('MM/DD(ddd)');
+    }
+
+    public function clockIn(): string
+    {
+        return optional($this->attendance?->clock_in)->format('H:i') ?? '';
+    }
+
+    public function clockOut(): string
+    {
+        return optional($this->attendance?->clock_out)->format('H:i') ?? '';
+    }
+
+    public function breakTime(): string
+    {
+        return $this->formatSeconds(
+            $this->attendance?->total_break_seconds
+        );
+    }
+
+    public function workTime(): string
+    {
+        return $this->formatSeconds(
+            $this->attendance?->work_seconds
+        );
+    }
+
+    public function detailUrl(): ?string
+    {
+        return $this->attendance
                 ? route('attendance.show', $this->attendance->id)
-                : null,
-        ];
+                : null;
     }
 }

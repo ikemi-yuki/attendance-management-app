@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\StaffAttendanceController as AdminStaffAttendanceController;
+use App\Http\Controllers\Admin\AttendanceRequestApprovalController as AdminAttendanceRequestApprovalController;
 use App\Http\Controllers\User\ClockController as UserClockController;
 use App\Http\Controllers\User\AttendanceController as UserAttendanceController;
 use App\Http\Controllers\User\BreakController as UserBreakController;
 use App\Http\Controllers\User\AttendanceRequestController as UserAttendanceRequestController;
+use App\Http\Controllers\StampCorrectionRequestController;
 
 
 /*
@@ -53,6 +55,14 @@ Route::middleware(['auth'])
         Route::post('/detail/{id}', [UserAttendanceRequestController::class, 'store'])->name('attendance.store');
 });
 
+Route::middleware(['auth:web,admin','identify.role'])
+    ->get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('request.list');
+
+Route::middleware(['auth:admin','admin'])
+    ->group(function () {
+        Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminAttendanceRequestApprovalController::class, 'show'])->name('admin.request.show');
+});
+
 Route::middleware(['auth:admin','admin'])
     ->prefix('admin')
     ->group(function () {
@@ -62,3 +72,6 @@ Route::middleware(['auth:admin','admin'])
 
         Route::patch('/attendance/{id}', [AdminStaffAttendanceController::class, 'update'])->name('admin.attendance.update');
 });
+
+
+

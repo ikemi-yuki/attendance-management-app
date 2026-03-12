@@ -53,10 +53,10 @@ class AttendanceController extends Controller
         $attendances = $this->attendanceService->getMonthlyAttendances(Auth::id(), $start, $end);
 
         $rows = collect($dates)->map(
-            fn ($date) => (new MonthlyAttendanceRowViewModel(
+            fn ($date) => new MonthlyAttendanceRowViewModel(
                 $date,
                 $attendances[$date->toDateString()] ?? null
-            ))->toArray()
+            )
         );
 
         return view('user.attendances.index', [

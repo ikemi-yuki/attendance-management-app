@@ -15,7 +15,7 @@
                     <a class="nav__link" href="">スタッフ一覧</a>
                 </li>
                 <li class="nav__item">
-                    <a class="nav__link" href="">申請一覧</a>
+                    <a class="nav__link" href="{{ route('request.list') }}">申請一覧</a>
                 </li>
                 <li class="nav__item">
                     <form class="nav__item-form" action="{{ route('admin.logout') }}" method="post">
