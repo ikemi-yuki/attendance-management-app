@@ -47,6 +47,16 @@ class User extends Authenticatable
         'role' => 'integer',
     ];
 
+    public function scopeStaff($query)
+    {
+        return $query->where('role', self::ROLE_USER);
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', self::ROLE_ADMIN);
+    }
+
     public function isAdmin()
     {
         return $this->role === self::ROLE_ADMIN;

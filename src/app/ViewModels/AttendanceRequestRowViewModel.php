@@ -49,6 +49,6 @@ class AttendanceRequestRowViewModel
 
     public function adminDetailUrl(): string
     {
-        return route('admin.request.show', $this->attendanceRequest->attendance_correct_request_id);
+        return route('admin.request.show', $this->attendanceRequest->id);
     }
 }

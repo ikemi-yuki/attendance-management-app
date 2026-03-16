@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\StaffController as AdminStaffController;
 use App\Http\Controllers\Admin\StaffAttendanceController as AdminStaffAttendanceController;
 use App\Http\Controllers\Admin\AttendanceRequestApprovalController as AdminAttendanceRequestApprovalController;
 use App\Http\Controllers\User\ClockController as UserClockController;
@@ -71,7 +72,8 @@ Route::middleware(['auth:admin','admin'])
         Route::get('/attendance/{id}', [AdminStaffAttendanceController::class, 'show'])->name('admin.attendance.show');
 
         Route::patch('/attendance/{id}', [AdminStaffAttendanceController::class, 'update'])->name('admin.attendance.update');
+
+        Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.index');
+
+        Route::get('/attendance/staff/{id}', [AdminStaffAttendanceController::class, 'userIndex'])->name('admin.attendance.monthly');
 });
-
-
-

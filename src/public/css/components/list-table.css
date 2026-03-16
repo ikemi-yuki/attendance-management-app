@@ -6,6 +6,14 @@
     border-radius: 10px;
 }
 
+.staff-table {
+    width: 100%;
+    margin-top: 95px;
+    background: #fff;
+    letter-spacing: 0.1em;
+    border-radius: 10px;
+}
+
 .table__inner {
     width: 100%;
 }
@@ -24,23 +32,34 @@
 .table__header {
     padding: 5px 30px;
     height: 31px;
+    border-bottom: 3px solid #e1e1e1;
 }
 
 .request-table__header {
     padding: 5px 30px;
     height: 31px;
     text-align: left;
-}
-
-.table__header {
     border-bottom: 3px solid #e1e1e1;
 }
 
-.request-table__header {
+.staff-table__header {
+    padding: 5px;
+    height: 31px;
     border-bottom: 3px solid #e1e1e1;
 }
 
-.table__data {
+.staff-table__header:first-child,
+.staff-table__data:first-child {
+    padding-left: 80px;
+}
+
+.staff-table__header:last-child,
+.staff-table__data:last-child {
+    padding-right: 70px;
+}
+
+.table__data,
+.staff-table__data {
     padding: 5px;
     height: 33px;
 }
@@ -68,7 +87,21 @@
         margin-top: 40px;
     }
 
+    .staff-table {
+        margin-top: 60px;
+    }
+
     .table__header {
         padding: 5px 20px;
+    }
+
+    .staff-table__header:first-child,
+    .staff-table__data:first-child {
+        padding-left: 50px;
+    }
+
+    .staff-table__header:last-child,
+    .staff-table__data:last-child {
+        padding-right: 40px;
     }
 }

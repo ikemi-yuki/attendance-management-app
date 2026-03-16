@@ -18,27 +18,29 @@
             nextText="翌日"
             :label="$date->isoFormat('Y/MM/DD')"
         />
-        <x-ui.list-table>
-            <x-slot name="header">
-                <th class="table__header">名前</th>
-                <th class="table__header">出勤</th>
-                <th class="table__header">退勤</th>
-                <th class="table__header">休憩</th>
-                <th class="table__header">合計</th>
-                <th class="table__header">詳細</th>
-            </x-slot>
-            @foreach ($rows as $row)
-                <tr class="table__row">
-                    <td class="table__data">{{ $row->name() }}</td>
-                    <td class="table__data">{{ $row->clockIn() }}</td>
-                    <td class="table__data">{{ $row->clockOut() }}</td>
-                    <td class="table__data">{{ $row->breakTime() }}</td>
-                    <td class="table__data">{{ $row->workTime() }}</td>
-                    <td class="table__data">
-                        <a class="table__link" href="{{ $row->detailUrl() }}">詳細</a>
-                    </td>
-                </tr>
-            @endforeach
-        </x-ui.list-table>
+        <div class="table">
+            <x-ui.list-table>
+                <x-slot name="header">
+                    <th class="table__header">名前</th>
+                    <th class="table__header">出勤</th>
+                    <th class="table__header">退勤</th>
+                    <th class="table__header">休憩</th>
+                    <th class="table__header">合計</th>
+                    <th class="table__header">詳細</th>
+                </x-slot>
+                @foreach ($rows as $row)
+                    <tr class="table__row">
+                        <td class="table__data">{{ $row->name() }}</td>
+                        <td class="table__data">{{ $row->clockIn() }}</td>
+                        <td class="table__data">{{ $row->clockOut() }}</td>
+                        <td class="table__data">{{ $row->breakTime() }}</td>
+                        <td class="table__data">{{ $row->workTime() }}</td>
+                        <td class="table__data">
+                            <a class="table__link" href="{{ $row->detailUrl() }}">詳細</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </x-ui.list-table>
+        </div>
     </div>
 @endsection
