@@ -59,4 +59,11 @@ class MonthlyAttendanceRowViewModel
                 ? route('attendance.show', $this->attendance->id)
                 : null;
     }
+
+    public function adminDetailUrl(): ?string
+    {
+        return $this->attendance
+                ? route('admin.attendance.show', $this->attendance->id)
+                : null;
+    }
 }

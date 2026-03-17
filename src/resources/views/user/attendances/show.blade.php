@@ -3,7 +3,6 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/components/page-title.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components/detail-table.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/components/button.css') }}">
 @endpush
 
 @section('page')

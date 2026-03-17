@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Requests\UpdateAttendanceRequest;
 use App\Services\DateService;
 use App\Services\AttendanceService;
 use App\Services\AttendanceRequestService;
 use App\Services\AdminAttendanceService;
 use App\ViewModels\AdminAttendanceRowViewModel;
+use App\ViewModels\MonthlyAttendanceRowViewModel;
 
 class StaffAttendanceController extends Controller
 {
@@ -72,5 +74,41 @@ class StaffAttendanceController extends Controller
     {
         $this->adminAttendanceService->attendanceUpdate($id, $request->validated());
         return redirect()->route('admin.attendance.show', $id);
+    }
+
+    public function userIndex(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $month = $this->dateService->resolveMonth($request->month);
+
+        $months = $this->dateService->getPreviousNextMonths($month);
+
+        [$start, $end] = $this->dateService->getMonthRange($month);
+
+        $dates = $this->dateService->getDatesInMonth($start, $end);
+
+        $attendances = $this->attendanceService->getMonthlyAttendances($id, $start, $end);
+
+        $rows = collect($dates)->map(
+            fn ($date) => new MonthlyAttendanceRowViewModel(
+                $date,
+                $attendances[$date->toDateString()] ?? null
+            )
+        );
+
+        return view('admin.attendances.staff_index', [
+            'user' => $user,
+            'month' => $month,
+            'previousUrl' => route('admin.attendance.monthly', [
+                'id' => $id,
+                'month' => $months['previous']->format('Y-m')
+            ]),
+            'nextUrl' => route('admin.attendance.monthly', [
+                'id' => $id,
+                'month' => $months['next']->format('Y-m')
+            ]),
+            'rows' => $rows,
+        ]);
     }
 }
