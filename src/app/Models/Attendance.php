@@ -44,12 +44,6 @@ class Attendance extends Model
             ->where('status', AttendanceCorrectRequest::STATUS_PENDING);
     }
 
-    public function approvedRequest()
-    {
-        return $this->hasOne(AttendanceCorrectRequest::class)
-            ->where('status', AttendanceCorrectRequest::STATUS_APPROVED);
-    }
-
     public function getTotalBreakSecondsAttribute(): int
     {
         return $this->breaks

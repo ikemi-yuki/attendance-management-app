@@ -36,7 +36,7 @@
 }
 
 .request-table__header {
-    padding: 5px 30px;
+    padding: 5px 20px;
     height: 31px;
     text-align: left;
     border-bottom: 3px solid #e1e1e1;
@@ -65,9 +65,19 @@
 }
 
 .request-table__data {
-    padding: 5px 30px;
+    padding: 5px 20px;
     height: 33px;
     text-align: left;
+}
+
+.request-table__header:first-child,
+.request-table__data:first-child {
+    padding-left: 50px;
+}
+
+.request-table__header:last-child,
+.request-table__data:last-child {
+    padding-right: 70px;
 }
 
 .table__link {
@@ -103,5 +113,20 @@
     .staff-table__header:last-child,
     .staff-table__data:last-child {
         padding-right: 40px;
+    }
+
+    .request-table__header,
+    .request-table__data {
+        padding: 5px 10px;
+    }
+
+    .request-table__header:first-child,
+    .request-table__data:first-child {
+        padding-left: 25px;
+    }
+
+    .request-table__header:last-child,
+    .request-table__data:last-child {
+        padding-right: 35px;
     }
 }

@@ -133,6 +133,19 @@
     cursor: pointer;
 }
 
+.approve-message {
+    margin: 55px 0 0 auto;
+    padding: 8px;
+    width: 130px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background: #696969;
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+}
+
 @media screen and (min-width:768px) and (max-width: 850px) {
     .table {
         margin-top: 40px;
@@ -149,6 +162,13 @@
 
     .form__button-submit {
         padding: 3px;
+        width: 110px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .approve-message {
+        padding: 6px;
         width: 110px;
         height: 45px;
         font-size: 20px;

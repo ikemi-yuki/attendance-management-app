@@ -62,6 +62,8 @@ Route::middleware(['auth:web,admin','identify.role'])
 Route::middleware(['auth:admin','admin'])
     ->group(function () {
         Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminAttendanceRequestApprovalController::class, 'show'])->name('admin.request.show');
+
+        Route::patch('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminAttendanceRequestApprovalController::class, 'approve'])->name('admin.request.approve');
 });
 
 Route::middleware(['auth:admin','admin'])
