@@ -90,7 +90,7 @@ class StaffAttendanceController extends Controller
 
         $attendances = $this->attendanceService->getMonthlyAttendances($id, $start, $end);
 
-        $rows = collect($dates)->map(
+        $rows = $dates->map(
             fn ($date) => new MonthlyAttendanceRowViewModel(
                 $date,
                 $attendances[$date->toDateString()] ?? null
@@ -109,6 +109,42 @@ class StaffAttendanceController extends Controller
                 'month' => $months['next']->format('Y-m')
             ]),
             'rows' => $rows,
+        ]);
+    }
+
+    public function export(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $month = $this->dateService->resolveMonth($request->month);
+
+        [$start, $end] = $this->dateService->getMonthRange($month);
+
+        $csvData = $this->adminAttendanceService
+        ->getMonthlyCsvData($id, $start, $end);
+
+        $fileName = 'attendance_' . $user->name . '_' . $month->isoFormat('Y_MM') . '.csv';
+
+        return response()->streamDownload(function () use ($csvData, $fileName) {
+            $handle = fopen('php://output', 'w');
+
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, [
+                '日付',
+                '出勤',
+                '退勤',
+                '休憩',
+                '合計',
+            ]);
+
+            foreach ($csvData as $row) {
+                fputcsv($handle, $row);
+            }
+
+            fclose($handle);
+        }, $fileName, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 }

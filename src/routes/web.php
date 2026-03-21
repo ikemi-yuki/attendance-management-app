@@ -78,4 +78,6 @@ Route::middleware(['auth:admin','admin'])
         Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.index');
 
         Route::get('/attendance/staff/{id}', [AdminStaffAttendanceController::class, 'userIndex'])->name('admin.attendance.monthly');
+
+        Route::get('/attendance/staff/export/{id}', [AdminStaffAttendanceController::class, 'export'])->name('admin.attendance.export');
 });

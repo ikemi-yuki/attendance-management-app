@@ -42,5 +42,13 @@
                 @endforeach
             </x-ui.list-table>
         </div>
+        <div class="attendance__export">
+            <a class="attendance__export-button" href="{{ route('admin.attendance.export', [
+            'id' => $user->id,
+            'month' => $month->format('Y-m')
+            ]) }}">
+                CSV出力
+            </a>
+        </div>
     </div>
 @endsection

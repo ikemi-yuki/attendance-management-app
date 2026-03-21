@@ -13,7 +13,7 @@ class AdminAttendanceRowViewModel
 
     private function formatSeconds(?int $seconds): string
     {
-        if (!$seconds) {
+        if ($seconds === null) {
             return '';
         }
 

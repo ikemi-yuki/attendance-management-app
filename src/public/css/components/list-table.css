@@ -92,6 +92,21 @@
     cursor: default;
 }
 
+.attendance__export-button {
+    display: block;
+    padding: 9px;
+    margin: 55px 0 0 auto;
+    text-decoration: none;
+    width: 184px;
+    height: 54px;
+    background: #000;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
 @media screen and (min-width:768px) and (max-width: 850px) {
     .table {
         margin-top: 40px;
@@ -128,5 +143,12 @@
     .request-table__header:last-child,
     .request-table__data:last-child {
         padding-right: 35px;
+    }
+
+    .attendance__export-button {
+        padding: 6px;
+        width: 140px;
+        height: 45px;
+        font-size: 20px;
     }
 }

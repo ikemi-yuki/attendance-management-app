@@ -57,6 +57,6 @@ class DateService
             $date->addDay();
         }
 
-        return $dates;
+        return collect($dates);
     }
 }
