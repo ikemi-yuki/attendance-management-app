@@ -2,23 +2,24 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class AttendanceService
 {
-    public function getTodayAttendance()
+    public function getTodayAttendance(User $user)
     {
         return Attendance::with('breaks')
-            ->where('user_id', Auth::id())
+            ->where('user_id', $user->id)
             ->whereDate('work_date', Carbon::today())
             ->first();
     }
 
-    public function getStatus()
+    public function getStatus(User $user)
     {
-        $attendance = $this->getTodayAttendance();
+        $attendance = $this->getTodayAttendance($user);
 
         if (!$attendance) {
             return 'before';
@@ -35,18 +36,24 @@ class AttendanceService
         return $onBreak ? 'on_break' : 'working';
     }
 
-    public function clockIn()
+    public function clockIn(User $user)
     {
+        $attendance = $this->getTodayAttendance($user);
+
+        if ($attendance) {
+            abort(400, 'すでに出勤済みです');
+        }
+
         return Attendance::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'work_date' => Carbon::today(),
             'clock_in' => Carbon::now(),
         ]);
     }
 
-    public function clockOut()
+    public function clockOut(User $user)
     {
-        $attendance = $this->getTodayAttendance();
+        $attendance = $this->getTodayAttendance($user);
 
         if (!$attendance) {
             abort(400, '出勤していません');

@@ -9,15 +9,24 @@
     <div class="header-nav">
         <nav class="nav">
             <ul class="nav__list">
-                <li class="nav__item">
-                    <a class="nav__link" href="{{ route('clock') }}">勤怠</a>
-                </li>
-                <li class="nav__item">
-                    <a class="nav__link" href="{{ route('attendance.index') }}">勤怠一覧</a>
-                </li>
-                <li class="nav__item">
-                    <a class="nav__link" href="{{ route('request.list') }}">申請</a>
-                </li>
+                @if(($status ?? null) === 'finished')
+                    <li class="nav__item">
+                        <a class="nav__link--finished" href="{{ route('attendance.index') }}">今月の出勤一覧</a>
+                    </li>
+                    <li class="nav__item">
+                        <a class="nav__link--finished" href="{{ route('request.list') }}">申請一覧</a>
+                    </li>
+                @else
+                    <li class="nav__item">
+                        <a class="nav__link" href="{{ route('clock') }}">勤怠</a>
+                    </li>
+                    <li class="nav__item">
+                        <a class="nav__link" href="{{ route('attendance.index') }}">勤怠一覧</a>
+                    </li>
+                    <li class="nav__item">
+                        <a class="nav__link" href="{{ route('request.list') }}">申請</a>
+                    </li>
+                @endif
                 <li class="nav__item">
                     <form class="nav__item-form" action="{{ route('logout') }}" method="post">
                         @csrf

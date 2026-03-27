@@ -28,14 +28,14 @@ class AttendanceController extends Controller
 
     public function clockIn()
     {
-        $this->attendanceService->clockIn();
+        $this->attendanceService->clockIn(auth()->user());
 
         return redirect()->route('clock');
     }
 
     public function clockOut()
     {
-        $this->attendanceService->clockOut();
+        $this->attendanceService->clockOut(auth()->user());
 
         return redirect()->route('clock');
     }

@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 class AttendanceBreakFactory extends Factory
 {
@@ -14,8 +13,8 @@ class AttendanceBreakFactory extends Factory
      */
     public function definition()
     {
-        $start = Carbon::today()->setTime(12, 0);
-        $end = Carbon::today()->setTime(13, 0);
+        $start = now()->copy()->setTime(12, 0);
+        $end = now()->copy()->setTime(13, 0);
 
         return [
             'attendance_id' => null,
