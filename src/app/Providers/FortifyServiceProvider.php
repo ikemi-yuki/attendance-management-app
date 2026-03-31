@@ -12,6 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
@@ -36,6 +37,20 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Fortify::verifyEmailView(function (Request $request) {
+            $user = $request->user();
+
+            $verificationUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                [
+                    'id' => $user->id,
+                    'hash' => sha1($user->getEmailForVerification()),
+                ]
+            );
+            return view('user.auth.verify', compact('verificationUrl'));
+        });
+
         Fortify::createUsersUsing(CreateNewUser::class);
 
         Fortify::registerView(function () {

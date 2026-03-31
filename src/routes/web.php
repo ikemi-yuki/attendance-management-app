@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\StaffController as AdminStaffController;
 use App\Http\Controllers\Admin\StaffAttendanceController as AdminStaffAttendanceController;
@@ -36,7 +37,7 @@ Route::prefix('admin')->group(function () {
         ->name('admin.logout');
 });
 
-Route::middleware(['auth'])
+Route::middleware(['auth', 'verified.user'])
     ->prefix('attendance')
     ->group(function () {
         Route::get('/', [UserClockController::class, 'show'])->name('clock');
@@ -56,7 +57,7 @@ Route::middleware(['auth'])
         Route::post('/detail/{id}', [UserAttendanceRequestController::class, 'store'])->name('attendance.store');
 });
 
-Route::middleware(['auth:web,admin','identify.role'])
+Route::middleware(['auth:web,admin','identify.role', 'verified.user'])
     ->get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('request.list');
 
 Route::middleware(['auth:admin','admin'])
