@@ -4,10 +4,8 @@ namespace Tests\Feature\User;
 
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\AttendanceBreak;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceBreakTest extends TestCase
@@ -31,6 +29,7 @@ class AttendanceBreakTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
         $response->assertSee('休憩入');
+        $response->assertSee(route('attendance.break-start'));
 
         $response = $this->post(route('attendance.break-start'));
         $response->assertRedirect(route('clock'));
@@ -74,6 +73,7 @@ class AttendanceBreakTest extends TestCase
 
         $response = $this->get(route('clock'));
         $response->assertSee('休憩入');
+        $response->assertSee(route('attendance.break-start'));
     }
 
     public function test_休憩戻ボタンが正しく機能する()
@@ -98,6 +98,7 @@ class AttendanceBreakTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('休憩中');
         $response->assertSee('休憩戻');
+        $response->assertSee(route('attendance.break-end'));
 
         Carbon::setTestNow('2026-04-01 12:30:00');
         $response = $this->post(route('attendance.break-end'));
@@ -140,6 +141,7 @@ class AttendanceBreakTest extends TestCase
 
         $response = $this->get(route('clock'));
         $response->assertSee('休憩戻');
+        $response->assertSee(route('attendance.break-end'));
 
         $this->assertDatabaseCount('attendance_breaks', 2);
         $this->assertDatabaseHas('attendance_breaks', [

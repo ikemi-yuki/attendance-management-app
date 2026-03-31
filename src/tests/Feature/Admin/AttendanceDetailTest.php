@@ -7,7 +7,6 @@ use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceDetailTest extends TestCase
@@ -17,7 +16,6 @@ class AttendanceDetailTest extends TestCase
     public function test_勤怠詳細画面に表示されるデータが選択したものになっている()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([

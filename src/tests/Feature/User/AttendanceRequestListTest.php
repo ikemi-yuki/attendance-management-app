@@ -4,11 +4,9 @@ namespace Tests\Feature\User;
 
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\AttendanceBreak;
 use App\Models\AttendanceCorrectRequest;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceRequestListTest extends TestCase
@@ -18,7 +16,6 @@ class AttendanceRequestListTest extends TestCase
     public function test_承認待ちにログインユーザーが行った申請がすべて表示されている()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([
@@ -52,7 +49,6 @@ class AttendanceRequestListTest extends TestCase
     public function test_承認済みに管理者が承認した修正申請がすべて表示されている()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create(['name' => '山田']);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -78,7 +74,7 @@ class AttendanceRequestListTest extends TestCase
             'requested_note' => '電車遅延のため',
         ]);
 
-        $attendanceRequest = AttendanceCorrectRequest::first();
+        $attendanceRequest = AttendanceCorrectRequest::where('user_id', $user->id)->first();
 
         $response = $this->actingAs($adminUser, 'admin')->patch(route('admin.request.approve', ['attendance_correct_request_id' => $attendanceRequest->id]));
 
@@ -90,7 +86,6 @@ class AttendanceRequestListTest extends TestCase
     public function test_各申請の詳細を押下すると勤怠詳細画面に遷移する()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([

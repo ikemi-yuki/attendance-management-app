@@ -8,7 +8,6 @@ use App\Models\AttendanceBreak;
 use App\Models\AttendanceCorrectRequest;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceCorrectionTest extends TestCase
@@ -18,7 +17,6 @@ class AttendanceCorrectionTest extends TestCase
     public function test_出勤時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -44,7 +42,6 @@ class AttendanceCorrectionTest extends TestCase
     public function test_休憩開始時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -81,7 +78,6 @@ class AttendanceCorrectionTest extends TestCase
     public function test_休憩終了時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -119,7 +115,6 @@ class AttendanceCorrectionTest extends TestCase
     public function test_備考欄が未入力の場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -145,7 +140,6 @@ class AttendanceCorrectionTest extends TestCase
     public function test_修正申請処理が実行される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create(['name' => '山田']);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -157,9 +151,21 @@ class AttendanceCorrectionTest extends TestCase
             'clock_out' => '2026-04-01 17:00:00',
         ]);
 
+        $break = AttendanceBreak::factory()->create([
+            'attendance_id' => $attendance->id,
+            'break_start' => '2026-04-01 12:00:00',
+            'break_end' => '2026-04-01 13:00:00',
+        ]);
+
         $response = $this->actingAs($user)->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
             'clock_in' => '10:00',
             'clock_out' => '18:00',
+            'breaks' => [
+                $break->id => [
+                    'break_start' => '12:30',
+                    'break_end' => '13:30',
+                ],
+            ],
             'note' => '電車遅延のため',
         ]);
 
@@ -171,7 +177,14 @@ class AttendanceCorrectionTest extends TestCase
             'requested_note' => '電車遅延のため',
         ]);
 
-        $attendanceCorrectRequest = AttendanceCorrectRequest::first();
+        $attendanceRequest = AttendanceCorrectRequest::where('user_id', $user->id)->first();
+
+        $this->assertDatabaseHas('attendance_correct_request_breaks', [
+            'attendance_correct_request_id' => $attendanceRequest->id,
+            'attendance_break_id' => $break->id,
+            'requested_break_start' => '2026-04-01 12:30:00',
+            'requested_break_end' => '2026-04-01 13:30:00',
+        ]);
 
         $this->actingAs($adminUser, 'admin');
 
@@ -179,7 +192,7 @@ class AttendanceCorrectionTest extends TestCase
         $response->assertSee('申請一覧');
         $response->assertSeeInOrder(['承認待ち', '山田', '2026/04/01']);
 
-        $response = $this->get(route('admin.request.show', ['attendance_correct_request_id' => $attendanceCorrectRequest->id]));
+        $response = $this->get(route('admin.request.show', ['attendance_correct_request_id' => $attendanceRequest->id]));
         $response->assertSee('勤怠詳細');
         $response->assertSee('山田');
         $response->assertSee('<button class="form__button-submit" type="submit">承認</button>', false);

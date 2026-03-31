@@ -7,7 +7,6 @@ use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceDetailTest extends TestCase
@@ -17,7 +16,6 @@ class AttendanceDetailTest extends TestCase
     public function test_勤怠詳細画面の名前がログインユーザーの氏名になっている()
     {
         Carbon::setTestNow('2026-04-01 12:00:00');
-
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([
@@ -34,7 +32,6 @@ class AttendanceDetailTest extends TestCase
     public function test_勤怠詳細画面の日付が選択した日付になっている()
     {
         Carbon::setTestNow('2026-04-01 12:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -45,14 +42,12 @@ class AttendanceDetailTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('attendance.show', ['id' => $attendance->id]));
 
-        $response->assertSee('2026年');
-        $response->assertSee('4月1日');
+        $response->assertSeeInOrder(['2026年', '4月1日']);
     }
 
     public function test_出勤・退勤にて記されている時間がログインユーザーの打刻と一致している()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -70,7 +65,6 @@ class AttendanceDetailTest extends TestCase
     public function test_休憩にて記されている時間がログインユーザーの打刻と一致している()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([

@@ -7,7 +7,6 @@ use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceUpdateTest extends TestCase
@@ -17,7 +16,6 @@ class AttendanceUpdateTest extends TestCase
     public function test_出勤時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -45,7 +43,6 @@ class AttendanceUpdateTest extends TestCase
     public function test_休憩開始時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -84,7 +81,6 @@ class AttendanceUpdateTest extends TestCase
     public function test_休憩終了時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
@@ -124,7 +120,6 @@ class AttendanceUpdateTest extends TestCase
     public function test_備考欄が未入力の場合エラーメッセージが表示される()
     {
         Carbon::setTestNow('2026-04-15 09:00:00');
-
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([

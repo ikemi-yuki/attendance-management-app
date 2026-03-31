@@ -3,11 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\User;
-use App\Models\Attendance;
-use App\Models\AttendanceBreak;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class StaffListTest extends TestCase
@@ -16,8 +12,6 @@ class StaffListTest extends TestCase
 
     public function test_管理者ユーザーが全一般ユーザーの氏名・メールアドレスを確認できる()
     {
-        Carbon::setTestNow('2026-04-01 12:00:00');
-
         $user = User::factory()->create([
             'name' => '山田',
             'email' => 'yamada@example.com',
