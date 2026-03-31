@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Attendance;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class AttendanceService

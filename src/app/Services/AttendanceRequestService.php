@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Attendance;
 use App\Models\AttendanceCorrectRequest;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class AttendanceRequestService
@@ -83,7 +82,7 @@ class AttendanceRequestService
             ])->findOrFail($requestId);
 
             if ($request->status !== AttendanceCorrectRequest::STATUS_PENDING) {
-                throw new Exception('すでに承認済み');
+                throw new \Exception('すでに承認済み');
             }
 
             $attendance = $request->attendance;

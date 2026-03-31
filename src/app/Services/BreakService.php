@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Attendance;
 use App\Services\AttendanceService;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class BreakService

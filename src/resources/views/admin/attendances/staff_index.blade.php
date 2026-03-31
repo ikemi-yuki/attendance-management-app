@@ -11,7 +11,7 @@
         <x-ui.page-title>
             {{ $user->name }}さんの勤怠
         </x-ui.page-title>
-        <x-attendance.table-header
+        <x-attendances.table-header
             :previousUrl="$previousUrl"
             previousText="前月"
             :nextUrl="$nextUrl"
@@ -36,17 +36,16 @@
                         <td class="table__data">{{ $row->breakTime() }}</td>
                         <td class="table__data">{{ $row->workTime() }}</td>
                         <td class="table__data">
-                            <a class="table__link{{ !$row->adminDetailUrl() ? '--disabled' : '' }}" href="{{ $row->adminDetailUrl() ?? '#' }}">詳細</a>
+                            <a class="table__link{{ !$row->adminDetailUrl() ? '--disabled' : '' }}" href="{{ $row->adminDetailUrl() ?? '#' }}">
+                                詳細
+                            </a>
                         </td>
                     </tr>
                 @endforeach
             </x-ui.list-table>
         </div>
         <div class="attendance__export">
-            <a class="attendance__export-button" href="{{ route('admin.attendance.export', [
-            'id' => $user->id,
-            'month' => $month->format('Y-m')
-            ]) }}">
+            <a class="attendance__export-button" href="{{ route('admin.attendance.export', ['id' => $user->id, 'month' => $month->format('Y-m')]) }}">
                 CSV出力
             </a>
         </div>

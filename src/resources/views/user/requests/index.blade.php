@@ -11,7 +11,7 @@
         <x-ui.page-title>
             申請一覧
         </x-ui.page-title>
-        <x-request.tab :status="$status ?? 'pending'" />
+        <x-requests.tab :status="$status ?? 'pending'" />
         <div class="table">
             <x-ui.list-table>
                 <x-slot name="header">

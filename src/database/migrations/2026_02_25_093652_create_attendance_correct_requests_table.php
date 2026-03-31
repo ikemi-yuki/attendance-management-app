@@ -22,7 +22,7 @@ class CreateAttendanceCorrectRequestsTable extends Migration
             $table->text('requested_note');
             $table->unsignedTinyInteger('status')->default(0)->comment('0:pending, 1:approved');
             $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->dateTime('requested_at')->nullable();
+            $table->dateTime('requested_at')->useCurrent();
             $table->dateTime('approved_at')->nullable();
             $table->timestamps();
         });

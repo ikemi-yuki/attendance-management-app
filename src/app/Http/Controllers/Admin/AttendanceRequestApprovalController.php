@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\AttendanceRequestService;
 use App\Models\AttendanceCorrectRequest;
-use App\ViewModels\AttendanceRequestRowViewModel;
 
 class AttendanceRequestApprovalController extends Controller
 {

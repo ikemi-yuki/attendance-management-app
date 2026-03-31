@@ -14,9 +14,7 @@
     <header class="header">
         <div class="header__container">
             <h1 class=header__logo>
-                <a href="">
-                    <img class="header__logo-img" src="{{ asset('images/logos/COACHTECH-header-logo.png') }}" alt="COACHTECH">
-                </a>
+                <img class="header__logo-img" src="{{ asset('images/logos/COACHTECH-header-logo.png') }}" alt="COACHTECH">
             </h1>
             @yield('nav')
         </div>

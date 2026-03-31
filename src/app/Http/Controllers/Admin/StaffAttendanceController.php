@@ -125,7 +125,7 @@ class StaffAttendanceController extends Controller
 
         $fileName = 'attendance_' . $user->name . '_' . $month->isoFormat('Y_MM') . '.csv';
 
-        return response()->streamDownload(function () use ($csvData, $fileName) {
+        return response()->streamDownload(function () use ($csvData) {
             $handle = fopen('php://output', 'w');
 
             fwrite($handle, "\xEF\xBB\xBF");

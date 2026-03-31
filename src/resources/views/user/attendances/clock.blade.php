@@ -17,12 +17,8 @@
                 退勤済
             @endif
         </p>
-        <p class="clock__date">
-            {{ now()->isoFormat('YYYY年M月D日(ddd)') }}
-        </p>
-        <p class="clock__time">
-            {{ now()->isoFormat('HH:mm') }}
-        </p>
+        <p class="clock__date">{{ now()->isoFormat('YYYY年M月D日(ddd)') }}</p>
+        <p class="clock__time">{{ now()->isoFormat('HH:mm') }}</p>
         <div class="clock__form-wrapper">
             @if($status === 'before')
                 <form class="clock-in__form" action="{{ route('attendance.clock-in') }}" method="post">

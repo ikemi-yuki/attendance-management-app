@@ -68,7 +68,7 @@ class FortifyServiceProvider extends ServiceProvider
             ->validate();
 
             if (Auth::attempt($request->only('email', 'password'))) {
-                $user = Auth::user();
+                $user = auth()->user();
 
                 if (!$user->hasVerifiedEmail()) {
                     return $user;

@@ -16,7 +16,7 @@ class DateService
     public function resolveMonth(?string $month): Carbon
     {
         return $month
-            ? Carbon::createFromFormat('Y-m', $month)->startOfMonth()
+            ? Carbon::parse($month . '-01')->startOfMonth()
             : now()->startOfMonth();
     }
 
@@ -41,15 +41,14 @@ class DateService
         $month = $month->copy()->startOfMonth();
 
         return [
-            'previous' => $month->copy()->subMonth(),
-            'next'     => $month->copy()->addMonth(),
+            'previous' => $month->copy()->subMonthNoOverflow(),
+            'next'     => $month->copy()->addMonthNoOverflow(),
         ];
     }
 
     public function getDatesInMonth(Carbon $start, Carbon $end)
     {
         $dates = [];
-
         $date = $start->copy();
 
         while ($date <= $end) {

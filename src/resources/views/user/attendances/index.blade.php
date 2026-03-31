@@ -11,7 +11,7 @@
         <x-ui.page-title>
             勤怠一覧
         </x-ui.page-title>
-        <x-attendance.table-header
+        <x-attendances.table-header
             :previousUrl="$previousUrl"
             previousText="前月"
             :nextUrl="$nextUrl"

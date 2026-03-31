@@ -32,7 +32,7 @@ return [
     'confirmed'            => ':attributeと:attribute確認が一致しません。',
     'date'                 => ':attributeは、正しい日付ではありません。',
     'date_equals'          => ':attributeは:dateに等しい日付でなければなりません。',
-    'date_format'          => ":attributeの形式は、':format'と合いません。",
+    'date_format'          => ":attributeの形式は、時刻形式にしてください。",
     'different'            => ':attributeと:otherには、異なるものを指定してください。',
     'digits'               => ':attributeは、:digits桁にしてください。',
     'digits_between'       => ':attributeは、:min桁から:max桁にしてください。',

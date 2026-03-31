@@ -1,6 +1,4 @@
-@props([
-    'status' => 'pending'
-])
+@props(['status' => 'pending'])
 
 <div class="tabs">
     <a href="{{ route('request.list',['status' => 'pending']) }}" class="status__tab{{ $status === 'pending' ? '--active' : '' }}">

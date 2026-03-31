@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class EnsureUserIsVerified
@@ -18,7 +17,7 @@ class EnsureUserIsVerified
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::guard('web')->user();
+        $user = auth()->guard('web')->user();
 
         if ($user && $user->role === User::ROLE_USER) {
             if (!$user->hasVerifiedEmail()) {

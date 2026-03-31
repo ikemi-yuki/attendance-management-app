@@ -2,9 +2,7 @@
     <table class="table__inner">
         <tr class="table__row">
             <th class="table__header">名前</th>
-            <td class="table__data--name">
-                {{ $attendance->user->name }}
-            </td>
+            <td class="table__data--name">{{ $attendance->user->name }}</td>
         </tr>
         <tr class="table__row">
             <th class="table__header">日付</th>

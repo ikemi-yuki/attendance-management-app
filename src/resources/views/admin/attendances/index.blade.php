@@ -11,7 +11,7 @@
         <x-ui.page-title>
             {{ $date->isoFormat('YYYY年M月D日') }}の勤怠
         </x-ui.page-title>
-        <x-attendance.table-header
+        <x-attendances.table-header
             :previousUrl="$previousUrl"
             previousText="前日"
             :nextUrl="$nextUrl"

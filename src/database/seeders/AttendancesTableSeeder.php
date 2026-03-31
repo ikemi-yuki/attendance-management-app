@@ -31,7 +31,7 @@ class AttendancesTableSeeder extends Seeder
             foreach (range(0, 89) as $daysAgo) {
                 $date = Carbon::today()->subDays($daysAgo);
 
-                if (rand(1, 100) > 70) {
+                if (rand(1, 100) > 75) {
                     continue;
                 }
 

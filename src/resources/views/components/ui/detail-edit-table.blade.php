@@ -5,9 +5,7 @@
         <table class="table__inner">
             <tr class="table__row">
                 <th class="table__header">名前</th>
-                <td class="table__data--name">
-                    {{ $attendance->user->name }}
-                </td>
+                <td class="table__data--name">{{ $attendance->user->name }}</td>
             </tr>
             <tr class="table__row">
                 <th class="table__header">日付</th>
@@ -20,9 +18,9 @@
                 <th class="table__header">出勤・退勤</th>
                 <td class="table__data">
                     <div class="table__data-content">
-                        <input class="table__data-input" type="text" name="clock_in" value="{{ old('clock_in', optional($attendance->clock_in)->format('H:i')) }}">
+                        <input class="table__data-input" type="time" name="clock_in" value="{{ old('clock_in', optional($attendance->clock_in)->format('H:i')) }}">
                         <span class="table__data-symbol">～</span>
-                        <input class="table__data-input" type="text" name="clock_out" value="{{ old('clock_out', optional($attendance->clock_out)->format('H:i')) }}">
+                        <input class="table__data-input" type="time" name="clock_out" value="{{ old('clock_out', optional($attendance->clock_out)->format('H:i')) }}">
                     </div>
                     <div class="error">
                         @error('clock_in')
@@ -41,9 +39,9 @@
                     <th class="table__header">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</th>
                     <td class="table__data">
                         <div class="table__data-content">
-                            <input class="table__data-input" type="text" name="breaks[{{ $break->id }}][break_start]" value="{{ old("breaks.$break->id.break_start", optional($break->break_start)->format('H:i')) }}">
+                            <input class="table__data-input" type="time" name="breaks[{{ $break->id }}][break_start]" value="{{ old("breaks.$break->id.break_start", optional($break->break_start)->format('H:i')) }}">
                             <span class="table__data-symbol">～</span>
-                            <input class="table__data-input" type="text" name="breaks[{{ $break->id }}][break_end]" value="{{ old("breaks.$break->id.break_end", optional($break->break_end)->format('H:i')) }}">
+                            <input class="table__data-input" type="time" name="breaks[{{ $break->id }}][break_end]" value="{{ old("breaks.$break->id.break_end", optional($break->break_end)->format('H:i')) }}">
                         </div>
                         <div class="error">
                             @error("breaks.$break->id.break_start")
@@ -62,9 +60,9 @@
                 <th class="table__header">{{ $breaks->count() === 0 ? '休憩' : '休憩' . ($breaks->count() + 1) }}</th>
                 <td class="table__data">
                     <div class="table__data-content">
-                        <input class="table__data-input" type="text" name="breaks[new][break_start]" value="{{ old('breaks.new.break_start') }}">
+                        <input class="table__data-input" type="time" name="breaks[new][break_start]" value="{{ old('breaks.new.break_start') }}">
                         <span class="table__data-symbol">～</span>
-                        <input class="table__data-input" type="text" name="breaks[new][break_end]" value="{{ old('breaks.new.break_end') }}">
+                        <input class="table__data-input" type="time" name="breaks[new][break_end]" value="{{ old('breaks.new.break_end') }}">
                     </div>
                     <div class="error">
                         @error("breaks.new.break_start")

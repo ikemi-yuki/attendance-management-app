@@ -16,9 +16,7 @@
                 :attendanceRequest="$attendanceRequest"
                 :requestBreaks="$attendanceRequest->requestBreaks"
             />
-            <p class="pending-message">
-                *承認待ちのため修正はできません。
-            </p>
+            <p class="pending-message">*承認待ちのため修正はできません。</p>
         @else
             <x-ui.detail-edit-table
                 :action="route('attendance.store', ['id' => $attendance->id])"

@@ -21,7 +21,6 @@ class AdminAttendanceService
         if ($seconds === null) {
             return '';
         }
-
         return CarbonInterval::seconds($seconds)
             ->cascade()
             ->format('%H:%I');
@@ -32,7 +31,6 @@ class AdminAttendanceService
         return DB::transaction(function () use ($attendanceId, $data) {
 
             $attendance = Attendance::findOrFail($attendanceId);
-
             $date = $attendance->work_date;
 
             $attendance->update([
@@ -42,32 +40,26 @@ class AdminAttendanceService
             ]);
 
             foreach ($data['breaks'] as $breakId => $break) {
-
                 if ($breakId === 'new') {
-
                     if (!empty($break['break_start']) && !empty($break['break_end'])) {
                         $attendance->breaks()->create([
                             'break_start' => $date->copy()->setTimeFromTimeString($break['break_start']),
                             'break_end' => $date->copy()->setTimeFromTimeString($break['break_end']),
                         ]);
                     }
-
                 } else {
-
                     $attendance->breaks()
                         ->where('id', $breakId)
                         ->update([
                             'break_start' => $break['break_start']
                                 ? $date->copy()->setTimeFromTimeString($break['break_start'])
                                 : null,
-
                             'break_end' => $break['break_end']
                                 ? $date->copy()->setTimeFromTimeString($break['break_end'])
                                 : null,
                         ]);
                 }
             }
-
             return $attendance;
         });
     }
