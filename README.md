@@ -62,12 +62,12 @@ php artisan db:seed
 
 ## テストアカウント
 
-name: 一般ユーザー
-email: user@example.com
+name: 一般ユーザー<br>
+email: user@example.com<br>
 password: password
 -------------------------
-name: 管理者
-email: admin@example.com
+name: 管理者<br>
+email: admin@example.com<br>
 password: password
 -------------------------
 
