@@ -60,7 +60,18 @@ php artisan migrate
 php artisan db:seed
 ```
 
-## テスト
+## テストアカウント
+
+name: 一般ユーザー
+email: user@example.com
+password: password
+-------------------------
+name: 管理者
+email: admin@example.com
+password: password
+-------------------------
+
+## PHPUnitを利用したテスト
 
 ※ テストでは `demo_test` データベースを使用します。
 
