@@ -66,12 +66,11 @@ class AdminAttendanceService
 
     public function getMonthlyCsvData($userId, Carbon $start, Carbon $end): array
     {
-        $attendances = $this->attendanceService
-        ->getMonthlyAttendances($userId, $start, $end);
+        $attendances = $this->attendanceService->getMonthlyAttendances($userId, $start, $end);
 
         $dates = $this->dateService->getDatesInMonth($start, $end);
         return $dates->map(function ($date) use ($attendances) {
-        $attendance = $attendances[$date->toDateString()] ?? null;
+            $attendance = $attendances[$date->toDateString()] ?? null;
 
             return [
                 $date->isoFormat('MM/DD(ddd)'),

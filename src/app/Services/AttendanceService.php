@@ -81,9 +81,7 @@ class AttendanceService
         return Attendance::where('user_id', $userId)
             ->whereBetween('work_date', [$start, $end])
             ->get()
-            ->keyBy(fn ($attendance) =>
-                $attendance->work_date->toDateString()
-            );
+            ->keyBy(fn ($attendance) =>$attendance->work_date->toDateString());
     }
 
     public function getAttendanceDetail(int $attendanceId)

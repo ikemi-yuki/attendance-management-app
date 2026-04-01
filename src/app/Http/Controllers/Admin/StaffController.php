@@ -12,8 +12,7 @@ class StaffController extends Controller
     {
         $rows = User::staff()
             ->get()
-            ->map(fn ($user) => new AdminStaffRowViewModel($user)
-        );
+            ->map(fn ($user) => new AdminStaffRowViewModel($user));
 
         return view('admin.staff.index', ['rows' => $rows,]);
     }

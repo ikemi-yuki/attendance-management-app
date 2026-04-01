@@ -27,7 +27,6 @@ class AttendanceRequestController extends Controller
 
         $hasPendingRequest = $attendance->pendingRequest();
 
-        return redirect()
-            ->route('request.list', ['status' => 'pending']);
+        return redirect()->route('request.list', ['status' => 'pending']);
     }
 }

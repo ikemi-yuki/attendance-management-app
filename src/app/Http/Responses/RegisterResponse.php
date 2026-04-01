@@ -15,7 +15,7 @@ class RegisterResponse implements RegisterResponseContract
             return redirect()->route('verification.notice');
         }
 
-        if ($user->role === User::ROLE_ADMIN) {
+        if ($user->isAdmin()) {
             return redirect()->intended('/admin/attendance/list');
         }
 

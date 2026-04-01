@@ -67,7 +67,8 @@ class StaffAttendanceController extends Controller
         return view('admin.attendances.show', compact(
             'attendance',
             'attendanceRequest',
-            'hasPendingRequest'));
+            'hasPendingRequest'
+        ));
     }
 
     public function update(UpdateAttendanceRequest $request, $id)

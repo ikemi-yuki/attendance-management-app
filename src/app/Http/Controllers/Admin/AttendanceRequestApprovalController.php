@@ -27,7 +27,8 @@ class AttendanceRequestApprovalController extends Controller
 
         return view('admin.requests.show', compact(
             'attendanceRequest',
-            'hasPendingRequest'));
+            'hasPendingRequest'
+        ));
     }
 
     public function approve($attendance_correct_request_id)
@@ -37,7 +38,6 @@ class AttendanceRequestApprovalController extends Controller
             auth()->id()
         );
 
-        return redirect()
-            ->route('admin.request.show', $attendance_correct_request_id);
+        return redirect()->route('admin.request.show', $attendance_correct_request_id);
     }
 }

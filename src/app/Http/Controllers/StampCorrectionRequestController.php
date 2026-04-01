@@ -29,7 +29,7 @@ class StampCorrectionRequestController extends Controller
         );
 
         $rows = $requests->map(
-                fn ($attendanceRequest) => new AttendanceRequestRowViewModel($attendanceRequest)
+            fn ($attendanceRequest) => new AttendanceRequestRowViewModel($attendanceRequest)
         );
 
         $view = $role === User::ROLE_ADMIN

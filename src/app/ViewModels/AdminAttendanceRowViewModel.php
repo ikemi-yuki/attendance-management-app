@@ -39,16 +39,12 @@ class AdminAttendanceRowViewModel
 
     public function breakTime(): string
     {
-        return $this->formatSeconds(
-            $this->attendance->total_break_seconds
-        );
+        return $this->formatSeconds($this->attendance->total_break_seconds);
     }
 
     public function workTime(): string
     {
-        return $this->formatSeconds(
-            $this->attendance->work_seconds
-        );
+        return $this->formatSeconds($this->attendance->work_seconds);
     }
 
     public function detailUrl(): string
