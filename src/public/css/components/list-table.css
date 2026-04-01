@@ -36,7 +36,8 @@
 }
 
 .request-table__header {
-    padding: 5px 20px;
+    padding: 5px 15px;
+    width: 17%;
     height: 31px;
     text-align: left;
     border-bottom: 3px solid #e1e1e1;
@@ -65,7 +66,8 @@
 }
 
 .request-table__data {
-    padding: 5px 20px;
+    padding: 5px 15px;
+    width: 17%;
     height: 33px;
     text-align: left;
 }
@@ -132,7 +134,7 @@
 
     .request-table__header,
     .request-table__data {
-        padding: 5px 10px;
+        padding: 5px;
     }
 
     .request-table__header:first-child,
