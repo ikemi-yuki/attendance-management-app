@@ -82,6 +82,14 @@
     padding-right: 70px;
 }
 
+.staff-table__header:first-child,
+.staff-table__data:first-child,
+.staff-table__header:last-child,
+.staff-table__data:last-child {
+    width: 30%;
+}
+
+
 .table__link {
     text-decoration: none;
     color: #000;
@@ -139,12 +147,12 @@
 
     .request-table__header:first-child,
     .request-table__data:first-child {
-        padding-left: 25px;
+        padding-left: 20px;
     }
 
     .request-table__header:last-child,
     .request-table__data:last-child {
-        padding-right: 35px;
+        padding-right: 30px;
     }
 
     .attendance__export-button {
