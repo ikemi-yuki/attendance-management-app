@@ -13,30 +13,75 @@ class StaffAttendanceTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function baseDate(): Carbon
+    {
+        return Carbon::create(2026, 4, 1);
+    }
+
+    private function previousMonthDate(): Carbon
+    {
+        return $this->baseDate()->copy()->subMonth()->setDay(15);
+    }
+
+    private function nextMonthDate(): Carbon
+    {
+        return $this->baseDate()->copy()->addMonth()->setDay(15);
+    }
+
+    private function clockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 0);
+    }
+
+    private function clockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 0);
+    }
+
+    private function breakStartTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(12, 0);
+    }
+
+    private function breakEndTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(13, 0);
+    }
+
+    private function otherUserClockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(10, 0);
+    }
+
+    private function now(): Carbon
+    {
+        return $this->clockOutTime();
+    }
+
     public function test_ユーザーの勤怠情報が正しく表示される()
     {
-        Carbon::setTestNow('2026-04-01 20:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         AttendanceBreak::factory()->create([
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
-            'break_end' => '2026-04-01 13:00:00',
+            'break_start' => $this->breakStartTime(),
+            'break_end' => $this->breakEndTime(),
         ]);
 
         $otherUser = User::factory()->create(['name' => '田中']);
 
         Attendance::factory()->create([
             'user_id' => $otherUser->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 08:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->otherUserClockInTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -51,19 +96,19 @@ class StaffAttendanceTest extends TestCase
 
     public function test_前月を押下した時に表示月の前月の情報が表示される()
     {
-        Carbon::setTestNow('2026-04-10 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
-        $attendance = Attendance::factory()->create([
+        Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-03-15',
-            'clock_in' => '2026-03-15 09:00:00',
+            'work_date' => $this->previousMonthDate(),
+            'clock_in' => $this->previousMonthDate()->copy()->setTime(8, 0),
         ]);
 
         Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-02-15',
-            'clock_in' => '2026-02-15 08:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -84,25 +129,25 @@ class StaffAttendanceTest extends TestCase
             'month' => '2026-03',
         ]));
 
-        $response->assertSeeInOrder(['03/15(日)', '09:00']);
-        $response->assertDontSee('08:00');
+        $response->assertSeeInOrder(['03/15(日)', '08:00']);
+        $response->assertDontSee('09:00');
     }
 
     public function test_翌月を押下した時に表示月の翌月の情報が表示される()
     {
-        Carbon::setTestNow('2026-04-10 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
-        $attendance = Attendance::factory()->create([
+        Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-05-15',
-            'clock_in' => '2026-05-15 09:00:00',
+            'work_date' => $this->nextMonthDate(),
+            'clock_in' => $this->nextMonthDate()->copy()->setTime(8, 0),
         ]);
 
         Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-15',
-            'clock_in' => '2026-04-15 08:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -123,19 +168,19 @@ class StaffAttendanceTest extends TestCase
             'month' => '2026-05',
         ]));
 
-        $response->assertSeeInOrder(['05/15(金)', '09:00']);
-        $response->assertDontSee('08:00');
+        $response->assertSeeInOrder(['05/15(金)', '08:00']);
+        $response->assertDontSee('09:00');
     }
 
     public function test_詳細を押下するとその日の勤怠詳細画面に遷移する()
     {
-        Carbon::setTestNow('2026-04-01 12:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);

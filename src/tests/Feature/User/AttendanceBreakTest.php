@@ -12,15 +12,45 @@ class AttendanceBreakTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function baseDate(): Carbon
+    {
+        return Carbon::create(2026, 4, 1);
+    }
+
+    private function clockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 0);
+    }
+
+    private function clockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 0);
+    }
+
+    private function firstBreakStartTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(12, 0);
+    }
+
+    private function breakEndTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(12, 30);
+    }
+
+    private function secondBreakStartTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(13, 0);
+    }
+
     public function test_休憩入ボタンが正しく機能する()
     {
-        Carbon::setTestNow('2026-04-01 12:00:00');
+        Carbon::setTestNow($this->firstBreakStartTime());
         $user =User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'clock_in' => Carbon::today()->setTime(9, 0),
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
             'clock_out' => null,
         ]);
 
@@ -36,7 +66,7 @@ class AttendanceBreakTest extends TestCase
 
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
+            'break_start' => $this->firstBreakStartTime(),
         ]);
 
         $response = $this->get(route('clock'));
@@ -45,13 +75,13 @@ class AttendanceBreakTest extends TestCase
 
     public function test_休憩入は一日に何回でもできる()
     {
-        Carbon::setTestNow('2026-04-01 12:00:00');
+        Carbon::setTestNow($this->firstBreakStartTime());
         $user =User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'clock_in' => Carbon::today()->setTime(9, 0),
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
             'clock_out' => null,
         ]);
 
@@ -62,13 +92,13 @@ class AttendanceBreakTest extends TestCase
 
         $response = $this->post(route('attendance.break-start'));
 
-        Carbon::setTestNow('2026-04-01 12:30:00');
+        Carbon::setTestNow($this->breakEndTime());
         $response = $this->post(route('attendance.break-end'));
 
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
-            'break_end' => '2026-04-01 12:30:00',
+            'break_start' => $this->firstBreakStartTime(),
+            'break_end' => $this->breakEndTime(),
         ]);
 
         $response = $this->get(route('clock'));
@@ -78,13 +108,13 @@ class AttendanceBreakTest extends TestCase
 
     public function test_休憩戻ボタンが正しく機能する()
     {
-        Carbon::setTestNow('2026-04-01 12:00:00');
+        Carbon::setTestNow($this->firstBreakStartTime());
         $user =User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'clock_in' => Carbon::today()->setTime(9, 0),
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
             'clock_out' => null,
         ]);
 
@@ -100,14 +130,14 @@ class AttendanceBreakTest extends TestCase
         $response->assertSee('休憩戻');
         $response->assertSee(route('attendance.break-end'));
 
-        Carbon::setTestNow('2026-04-01 12:30:00');
+        Carbon::setTestNow($this->breakEndTime());
         $response = $this->post(route('attendance.break-end'));
         $response->assertRedirect(route('clock'));
 
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
-            'break_end' => '2026-04-01 12:30:00',
+            'break_start' => $this->firstBreakStartTime(),
+            'break_end' => $this->breakEndTime(),
         ]);
 
         $response = $this->get(route('clock'));
@@ -116,13 +146,13 @@ class AttendanceBreakTest extends TestCase
 
     public function test_休憩戻は一日に何回でもできる()
     {
-        Carbon::setTestNow('2026-04-01 12:00:00');
+        Carbon::setTestNow($this->firstBreakStartTime());
         $user =User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'clock_in' => Carbon::today()->setTime(9, 0),
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
             'clock_out' => null,
         ]);
 
@@ -133,10 +163,10 @@ class AttendanceBreakTest extends TestCase
 
         $response = $this->post(route('attendance.break-start'));
 
-        Carbon::setTestNow('2026-04-01 12:30:00');
+        Carbon::setTestNow($this->breakEndTime());
         $response = $this->post(route('attendance.break-end'));
 
-        Carbon::setTestNow('2026-04-01 13:00:00');
+        Carbon::setTestNow($this->secondBreakStartTime());
         $response = $this->post(route('attendance.break-start'));
 
         $response = $this->get(route('clock'));
@@ -146,12 +176,12 @@ class AttendanceBreakTest extends TestCase
         $this->assertDatabaseCount('attendance_breaks', 2);
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
-            'break_end' => '2026-04-01 12:30:00',
+            'break_start' => $this->firstBreakStartTime(),
+            'break_end' => $this->breakEndTime(),
         ]);
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 13:00:00',
+            'break_start' => $this->secondBreakStartTime(),
             'break_end' => null,
         ]);
     }

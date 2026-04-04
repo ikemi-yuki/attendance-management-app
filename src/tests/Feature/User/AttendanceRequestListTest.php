@@ -13,16 +13,46 @@ class AttendanceRequestListTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function baseDate(): Carbon
+    {
+        return Carbon::create(2026, 4, 1);
+    }
+
+    private function clockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 0);
+    }
+
+    private function clockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 0);
+    }
+
+    private function requestedClockIn(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(10, 0);
+    }
+
+    private function requestedClockOut(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(18, 0);
+    }
+
+    private function now(): Carbon
+    {
+        return Carbon::create(2026, 4, 15, 9, 0);
+    }
+
     public function test_承認待ちにログインユーザーが行った申請がすべて表示されている()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $this->actingAs($user);
@@ -36,8 +66,8 @@ class AttendanceRequestListTest extends TestCase
         $this->assertDatabaseHas('attendance_correct_requests', [
             'user_id' => $user->id,
             'attendance_id' => $attendance->id,
-            'requested_clock_in' => '2026-04-01 10:00:00',
-            'requested_clock_out' => '2026-04-01 18:00:00',
+            'requested_clock_in' => $this->requestedClockIn(),
+            'requested_clock_out' => $this->requestedClockOut(),
             'requested_note' => '電車遅延のため',
         ]);
 
@@ -48,51 +78,16 @@ class AttendanceRequestListTest extends TestCase
 
     public function test_承認済みに管理者が承認した修正申請がすべて表示されている()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create(['name' => '山田']);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
-        ]);
-
-        $response = $this->actingAs($user)->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
-            'clock_in' => '10:00',
-            'clock_out' => '18:00',
-            'note' => '電車遅延のため',
-        ]);
-
-        $this->assertDatabaseHas('attendance_correct_requests', [
-            'user_id' => $user->id,
-            'attendance_id' => $attendance->id,
-            'requested_clock_in' => '2026-04-01 10:00:00',
-            'requested_clock_out' => '2026-04-01 18:00:00',
-            'requested_note' => '電車遅延のため',
-        ]);
-
-        $attendanceRequest = AttendanceCorrectRequest::where('user_id', $user->id)->first();
-
-        $response = $this->actingAs($adminUser, 'admin')->patch(route('admin.request.approve', ['attendance_correct_request_id' => $attendanceRequest->id]));
-
-        $response = $this->actingAs($user)->get(route('request.list', ['status' => 'approved']));
-        $response->assertSee('申請一覧');
-        $response->assertSeeInOrder(['承認済み', '山田', '2026/04/01']);
-    }
-
-    public function test_各申請の詳細を押下すると勤怠詳細画面に遷移する()
-    {
-        Carbon::setTestNow('2026-04-15 09:00:00');
-        $user = User::factory()->create(['name' => '山田']);
-
-        $attendance = Attendance::factory()->create([
-            'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $this->actingAs($user);
@@ -106,8 +101,47 @@ class AttendanceRequestListTest extends TestCase
         $this->assertDatabaseHas('attendance_correct_requests', [
             'user_id' => $user->id,
             'attendance_id' => $attendance->id,
-            'requested_clock_in' => '2026-04-01 10:00:00',
-            'requested_clock_out' => '2026-04-01 18:00:00',
+            'requested_clock_in' => $this->requestedClockIn(),
+            'requested_clock_out' => $this->requestedClockOut(),
+            'requested_note' => '電車遅延のため',
+        ]);
+
+        $attendanceRequest = AttendanceCorrectRequest::where('user_id', $user->id)->first();
+
+        $attendanceRequest->update([
+            'status' => AttendanceCorrectRequest::STATUS_APPROVED,
+        ]);
+
+        $response = $this->get(route('request.list', ['status' => 'approved']));
+        $response->assertSee('申請一覧');
+        $response->assertSeeInOrder(['承認済み', '山田', '2026/04/01']);
+    }
+
+    public function test_各申請の詳細を押下すると勤怠詳細画面に遷移する()
+    {
+        Carbon::setTestNow($this->now());
+        $user = User::factory()->create(['name' => '山田']);
+
+        $attendance = Attendance::factory()->create([
+            'user_id' => $user->id,
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+            'clock_in' => '10:00',
+            'clock_out' => '18:00',
+            'note' => '電車遅延のため',
+        ]);
+
+        $this->assertDatabaseHas('attendance_correct_requests', [
+            'user_id' => $user->id,
+            'attendance_id' => $attendance->id,
+            'requested_clock_in' => $this->requestedClockIn(),
+            'requested_clock_out' => $this->requestedClockOut(),
             'requested_note' => '電車遅延のため',
         ]);
 

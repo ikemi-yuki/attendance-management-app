@@ -13,25 +13,75 @@ class AttendanceRequestListTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function baseDate(): Carbon
+    {
+        return Carbon::create(2026, 4, 1);
+    }
+
+    private function clockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 0);
+    }
+
+    private function clockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 0);
+    }
+
+    private function requestedClockIn(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(10, 0);
+    }
+
+    private function requestedClockOut(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(18, 0);
+    }
+
+    private function otherUserClockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 30);
+    }
+
+    private function otherUserClockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 30);
+    }
+
+    private function otherUserRequestedClockIn(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(10, 30);
+    }
+
+    private function otherUserRequestedClockOut(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(18, 30);
+    }
+
+    private function now(): Carbon
+    {
+        return Carbon::create(2026, 4, 15, 9, 0);
+    }
+
     public function test_承認待ちの修正申請が全て表示されている()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
-        $attendanceRequest = AttendanceCorrectRequest::create([
+        AttendanceCorrectRequest::create([
             'user_id' => $user->id,
             'attendance_id' => $attendance->id,
-            'requested_clock_in' => '2026-04-01 10:00:00',
-            'requested_clock_out' => '2026-04-01 18:00:00',
+            'requested_clock_in' => $this->requestedClockIn(),
+            'requested_clock_out' => $this->requestedClockOut(),
             'requested_note' => '電車遅延のため',
-            'requested_at' => Carbon::now(),
+            'requested_at' => $this->now(),
             'status' => AttendanceCorrectRequest::STATUS_PENDING,
         ]);
 
@@ -39,18 +89,18 @@ class AttendanceRequestListTest extends TestCase
 
         $otherAttendance = Attendance::factory()->create([
             'user_id' => $otherUser->id,
-            'work_date' => '2026-04-02',
-            'clock_in' => '2026-04-02 09:30:00',
-            'clock_out' => '2026-04-02 17:30:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->otherUserClockInTime(),
+            'clock_out' => $this->otherUserClockOutTime(),
         ]);
 
-        $otherAttendanceRequest = AttendanceCorrectRequest::create([
+        AttendanceCorrectRequest::create([
             'user_id' => $otherUser->id,
             'attendance_id' => $otherAttendance->id,
-            'requested_clock_in' => '2026-04-02 10:30:00',
-            'requested_clock_out' => '2026-04-02 18:30:00',
+            'requested_clock_in' => $this->otherUserRequestedClockIn(),
+            'requested_clock_out' => $this->otherUserRequestedClockOut(),
             'requested_note' => '電車遅延のため',
-            'requested_at' => Carbon::now(),
+            'requested_at' => $this->now(),
             'status' => AttendanceCorrectRequest::STATUS_PENDING,
         ]);
 
@@ -64,23 +114,23 @@ class AttendanceRequestListTest extends TestCase
 
     public function test_承認済みの修正申請が全て表示されている()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create(['name' => '山田']);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
-        $attendanceRequest = AttendanceCorrectRequest::create([
+        AttendanceCorrectRequest::create([
             'user_id' => $user->id,
             'attendance_id' => $attendance->id,
-            'requested_clock_in' => '2026-04-01 10:00:00',
-            'requested_clock_out' => '2026-04-01 18:00:00',
+            'requested_clock_in' => $this->requestedClockIn(),
+            'requested_clock_out' => $this->requestedClockOut(),
             'requested_note' => '電車遅延のため',
-            'requested_at' => Carbon::now(),
+            'requested_at' => $this->now(),
             'status' => AttendanceCorrectRequest::STATUS_APPROVED,
         ]);
 
@@ -88,18 +138,18 @@ class AttendanceRequestListTest extends TestCase
 
         $otherAttendance = Attendance::factory()->create([
             'user_id' => $otherUser->id,
-            'work_date' => '2026-04-02',
-            'clock_in' => '2026-04-02 09:30:00',
-            'clock_out' => '2026-04-02 17:30:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->otherUserClockInTime(),
+            'clock_out' => $this->otherUserClockOutTime(),
         ]);
 
-        $otherAttendanceRequest = AttendanceCorrectRequest::create([
+        AttendanceCorrectRequest::create([
             'user_id' => $otherUser->id,
             'attendance_id' => $otherAttendance->id,
-            'requested_clock_in' => '2026-04-02 10:30:00',
-            'requested_clock_out' => '2026-04-02 18:30:00',
+            'requested_clock_in' => $this->otherUserRequestedClockIn(),
+            'requested_clock_out' => $this->otherUserRequestedClockOut(),
             'requested_note' => '電車遅延のため',
-            'requested_at' => Carbon::now(),
+            'requested_at' => $this->now(),
             'status' => AttendanceCorrectRequest::STATUS_APPROVED,
         ]);
 

@@ -13,16 +13,46 @@ class AttendanceUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function baseDate(): Carbon
+    {
+        return Carbon::create(2026, 4, 1);
+    }
+
+    private function clockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 0);
+    }
+
+    private function clockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 0);
+    }
+
+    private function breakStartTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(12, 0);
+    }
+
+    private function breakEndTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(13, 0);
+    }
+
+    private function now(): Carbon
+    {
+        return Carbon::create(2026, 4, 15, 9, 0);
+    }
+
     public function test_出勤時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -42,20 +72,20 @@ class AttendanceUpdateTest extends TestCase
 
     public function test_休憩開始時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $break = AttendanceBreak::factory()->create([
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
-            'break_end' => '2026-04-01 13:00:00',
+            'break_start' => $this->breakStartTime(),
+            'break_end' => $this->breakEndTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -80,20 +110,20 @@ class AttendanceUpdateTest extends TestCase
 
     public function test_休憩終了時間が退勤時間より後になっている場合エラーメッセージが表示される()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $break = AttendanceBreak::factory()->create([
             'attendance_id' => $attendance->id,
-            'break_start' => '2026-04-01 12:00:00',
-            'break_end' => '2026-04-01 13:00:00',
+            'break_start' => $this->breakStartTime(),
+            'break_end' => $this->breakEndTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -119,14 +149,14 @@ class AttendanceUpdateTest extends TestCase
 
     public function test_備考欄が未入力の場合エラーメッセージが表示される()
     {
-        Carbon::setTestNow('2026-04-15 09:00:00');
+        Carbon::setTestNow($this->now());
         $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $adminUser = User::factory()->create(['role' => User::ROLE_ADMIN]);

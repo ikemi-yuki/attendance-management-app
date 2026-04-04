@@ -26,15 +26,4 @@ class AttendanceFactory extends Factory
             'clock_out' => $clockOut,
         ];
     }
-
-    public function today()
-    {
-        return $this->state(function () {
-            return [
-                'work_date' => Carbon::today()->toDateString(),
-                'clock_in' => Carbon::today()->setTime(9, 0),
-                'clock_out' => Carbon::today()->setTime(18, 0),
-            ];
-        });
-    }
 }

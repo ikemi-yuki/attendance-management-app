@@ -12,12 +12,32 @@ class AttendanceClockTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function baseDate(): Carbon
+    {
+        return Carbon::create(2026, 4, 1);
+    }
+
+    private function clockInTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(9, 0);
+    }
+
+    private function clockOutTime(): Carbon
+    {
+        return $this->baseDate()->copy()->setTime(17, 0);
+    }
+
+    private function now(): Carbon
+    {
+        return $this->clockOutTime();
+    }
+
     public function test_出勤ボタンが正しく機能する()
     {
-        Carbon::setTestNow('2026-04-01 09:00:00');
-        $user =User::factory()->create();
+        Carbon::setTestNow($this->clockInTime());
+        $user = User::factory()->create();
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('勤務外');
@@ -29,8 +49,8 @@ class AttendanceClockTest extends TestCase
 
         $this->assertDatabaseHas('attendances', [
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
         ]);
 
         $response = $this->get(route('clock'));
@@ -39,15 +59,17 @@ class AttendanceClockTest extends TestCase
 
     public function test_出勤は一日一回のみできる()
     {
-        $user =User::factory()->create();
+        Carbon::setTestNow($this->now());
+        $user = User::factory()->create();
 
-        Attendance::factory()->today()->create([
+        Attendance::factory()->create([
             'user_id' => $user->id,
-            'clock_in' => Carbon::today()->setTime(9, 0),
-            'clock_out' => Carbon::today()->setTime(18, 0),
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('退勤済');
@@ -59,17 +81,17 @@ class AttendanceClockTest extends TestCase
 
     public function test_退勤ボタンが正しく機能する()
     {
-        Carbon::setTestNow('2026-04-01 17:00:00');
-        $user =User::factory()->create();
+        Carbon::setTestNow($this->clockOutTime());
+        $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'clock_in' => Carbon::today()->setTime(9, 0),
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
             'clock_out' => null,
         ]);
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
@@ -81,9 +103,9 @@ class AttendanceClockTest extends TestCase
 
         $this->assertDatabaseHas('attendances', [
             'user_id' => $user->id,
-            'work_date' => '2026-04-01',
-            'clock_in' => '2026-04-01 09:00:00',
-            'clock_out' => '2026-04-01 17:00:00',
+            'work_date' => $this->baseDate(),
+            'clock_in' => $this->clockInTime(),
+            'clock_out' => $this->clockOutTime(),
         ]);
 
         $response = $this->get(route('clock'));
