@@ -60,6 +60,12 @@ php artisan migrate
 php artisan db:seed
 ```
 
+## メール認証
+
+本アプリでは、メール送信にMailhogを使用しています。<br>
+以下にアクセスすると送信されたメールを確認できます。<br>
+http://localhost:8025
+
 ## テストアカウント
 
 name: 一般ユーザー<br>
