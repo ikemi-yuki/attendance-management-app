@@ -17,8 +17,8 @@
         />
         @if($hasPendingRequest && $attendanceRequest)
             <form class="form" action="{{ route('admin.request.approve', ['attendance_correct_request_id' => $attendanceRequest->id] ) }}" method="post">
-                @csrf
                 @method('PATCH')
+                @csrf
                 <div class="form__button">
                     <button class="form__button-submit" type="submit">承認</button>
                 </div>
