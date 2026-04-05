@@ -16,7 +16,7 @@ class AttendanceService
             ->first();
     }
 
-    public function getStatus(User $user)
+    public function getStatus(User $user): string
     {
         $attendance = $this->getTodayAttendance($user);
 

@@ -57,7 +57,7 @@ class AttendanceRequestListTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '10:00',
             'clock_out' => '18:00',
             'note' => '電車遅延のため',
@@ -92,7 +92,7 @@ class AttendanceRequestListTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '10:00',
             'clock_out' => '18:00',
             'note' => '電車遅延のため',
@@ -131,7 +131,7 @@ class AttendanceRequestListTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '10:00',
             'clock_out' => '18:00',
             'note' => '電車遅延のため',

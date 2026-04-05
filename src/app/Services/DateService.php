@@ -32,7 +32,7 @@ class DateService
     {
         return [
             'previous' => $date->copy()->subDay(),
-            'next'     => $date->copy()->addDay(),
+            'next' => $date->copy()->addDay(),
         ];
     }
 
@@ -42,7 +42,7 @@ class DateService
 
         return [
             'previous' => $month->copy()->subMonthNoOverflow(),
-            'next'     => $month->copy()->addMonthNoOverflow(),
+            'next' => $month->copy()->addMonthNoOverflow(),
         ];
     }
 

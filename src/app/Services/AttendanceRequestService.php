@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class AttendanceRequestService
 {
-    public function store(array $data, Attendance $attendance)
+    public function apply(array $data, Attendance $attendance)
     {
         return DB::transaction(function () use ($data, $attendance) {
 

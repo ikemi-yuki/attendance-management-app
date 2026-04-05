@@ -42,19 +42,19 @@ Route::middleware(['auth', 'verified.user'])
     ->group(function () {
         Route::get('/', [UserClockController::class, 'show'])->name('clock');
 
-        Route::post('/clock-in', [UserAttendanceController::class, 'clockIn'])->name('attendance.clock-in');
+        Route::post('/clock-in', [UserClockController::class, 'clockIn'])->name('attendance.clockIn');
 
-        Route::post('/clock-out', [UserAttendanceController::class, 'clockOut'])->name('attendance.clock-out');
+        Route::post('/clock-out', [UserClockController::class, 'clockOut'])->name('attendance.clockOut');
 
-        Route::post('/break-start', [UserBreakController::class, 'start'])->name('attendance.break-start');
+        Route::post('/break-start', [UserBreakController::class, 'breakStart'])->name('attendance.breakStart');
 
-        Route::post('/break-end', [UserBreakController::class, 'end'])->name('attendance.break-end');
+        Route::post('/break-end', [UserBreakController::class, 'breakEnd'])->name('attendance.breakEnd');
 
         Route::get('/list', [UserAttendanceController::class, 'index'])->name('attendance.index');
 
         Route::get('/detail/{id}', [UserAttendanceController::class, 'show'])->name('attendance.show');
 
-        Route::post('/detail/{id}', [UserAttendanceRequestController::class, 'store'])->name('attendance.store');
+        Route::post('/detail/{id}', [UserAttendanceRequestController::class, 'apply'])->name('attendance.apply');
 });
 
 Route::middleware(['auth:web,admin','identify.role', 'verified.user'])

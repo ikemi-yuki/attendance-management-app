@@ -14,16 +14,16 @@ class BreakController extends Controller
         $this->breakService = $breakService;
     }
 
-    public function start()
+    public function breakStart()
     {
-        $this->breakService->start(auth()->user());
+        $this->breakService->breakStart(auth()->user());
 
         return redirect()->route('clock');
     }
 
-    public function end()
+    public function breakEnd()
     {
-        $this->breakService->end(auth()->user());
+        $this->breakService->breakEnd(auth()->user());
 
         return redirect()->route('clock');
     }

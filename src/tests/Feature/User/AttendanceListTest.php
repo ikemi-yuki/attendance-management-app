@@ -58,7 +58,7 @@ class AttendanceListTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('勤務外');
 
-        $response = $this->post(route('attendance.clock-in'));
+        $response = $this->post(route('attendance.clockIn'));
 
         $this->assertDatabaseHas('attendances', [
             'user_id' => $user->id,
@@ -87,10 +87,10 @@ class AttendanceListTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
 
-        $response = $this->post(route('attendance.break-start'));
+        $response = $this->post(route('attendance.breakStart'));
 
         Carbon::setTestNow($this->breakEndTime());
-        $response = $this->post(route('attendance.break-end'));
+        $response = $this->post(route('attendance.breakEnd'));
 
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
@@ -112,10 +112,10 @@ class AttendanceListTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('勤務外');
 
-        $response = $this->post(route('attendance.clock-in'));
+        $response = $this->post(route('attendance.clockIn'));
 
         Carbon::setTestNow($this->clockOutTime());
-        $response = $this->post(route('attendance.clock-out'));
+        $response = $this->post(route('attendance.clockOut'));
 
         $this->assertDatabaseHas('attendances', [
             'user_id' => $user->id,

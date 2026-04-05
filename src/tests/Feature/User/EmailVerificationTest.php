@@ -68,10 +68,7 @@ class EmailVerificationTest extends TestCase
             ]
         );
 
-        $response = $this
-        ->actingAs($user)
-        ->followingRedirects()
-        ->get($verificationUrl);
+        $response = $this->actingAs($user)->followingRedirects()->get($verificationUrl);
 
         $response->assertSee('出勤');
 

@@ -10,7 +10,7 @@ class BreakService
 {
     public function __construct(private AttendanceService $attendanceService) {}
 
-    public function start(User $user)
+    public function breakStart(User $user)
     {
         $attendance = $this->attendanceService->getTodayAttendance($user);
 
@@ -28,7 +28,7 @@ class BreakService
         ]);
     }
 
-    public function end(User $user)
+    public function breakEnd(User $user)
     {
         $attendance = $this->attendanceService->getTodayAttendance($user);
 

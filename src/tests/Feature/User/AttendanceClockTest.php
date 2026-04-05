@@ -42,9 +42,9 @@ class AttendanceClockTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('勤務外');
         $response->assertSee('出勤');
-        $response->assertSee(route('attendance.clock-in'));
+        $response->assertSee(route('attendance.clockIn'));
 
-        $response = $this->post(route('attendance.clock-in'));
+        $response = $this->post(route('attendance.clockIn'));
         $response->assertRedirect(route('clock'));
 
         $this->assertDatabaseHas('attendances', [
@@ -73,9 +73,9 @@ class AttendanceClockTest extends TestCase
 
         $response = $this->get(route('clock'));
         $response->assertSee('退勤済');
-        $response->assertDontSee(route('attendance.clock-in'));
+        $response->assertDontSee(route('attendance.clockIn'));
 
-        $response = $this->post(route('attendance.clock-in'));
+        $response = $this->post(route('attendance.clockIn'));
         $response->assertStatus(400);
     }
 
@@ -96,9 +96,9 @@ class AttendanceClockTest extends TestCase
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
         $response->assertSee('退勤');
-        $response->assertSee(route('attendance.clock-out'));
+        $response->assertSee(route('attendance.clockOut'));
 
-        $response = $this->post(route('attendance.clock-out'));
+        $response = $this->post(route('attendance.clockOut'));
         $response->assertRedirect(route('clock'));
 
         $this->assertDatabaseHas('attendances', [

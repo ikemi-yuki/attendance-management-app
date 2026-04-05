@@ -69,6 +69,7 @@ class AdminAttendanceService
         $attendances = $this->attendanceService->getMonthlyAttendances($userId, $start, $end);
 
         $dates = $this->dateService->getDatesInMonth($start, $end);
+
         return $dates->map(function ($date) use ($attendances) {
             $attendance = $attendances[$date->toDateString()] ?? null;
 

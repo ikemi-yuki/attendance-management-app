@@ -41,7 +41,7 @@ class ClockPageTest extends TestCase
     public function test_現在の日時情報がUIと同じ形式で出力されている()
     {
         Carbon::setTestNow($this->now());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('clock'));
 
@@ -52,7 +52,7 @@ class ClockPageTest extends TestCase
     public function test_勤務外の場合勤怠ステータスが正しく表示される()
     {
         Carbon::setTestNow($this->now());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('clock'));
 
@@ -62,7 +62,7 @@ class ClockPageTest extends TestCase
     public function test_出勤中の場合勤怠ステータスが正しく表示される()
     {
         Carbon::setTestNow($this->now());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         Attendance::factory()->create([
             'user_id' => $user->id,
@@ -79,7 +79,7 @@ class ClockPageTest extends TestCase
     public function test_休憩中の場合勤怠ステータスが正しく表示される()
     {
         Carbon::setTestNow($this->now());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
@@ -102,7 +102,7 @@ class ClockPageTest extends TestCase
     public function test_退勤済みの場合勤怠ステータスが正しく表示される()
     {
         Carbon::setTestNow($this->now());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         Attendance::factory()->create([
             'user_id' => $user->id,

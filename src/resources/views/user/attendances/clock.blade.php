@@ -21,21 +21,21 @@
         <p class="clock__time">{{ now()->isoFormat('HH:mm') }}</p>
         <div class="clock__form-wrapper">
             @if($status === 'before')
-                <form class="clock-in__form" action="{{ route('attendance.clock-in') }}" method="post">
+                <form class="clock-in__form" action="{{ route('attendance.clockIn') }}" method="post">
                     @csrf
                     <input class="clock-in__form-input" type="submit" value="出勤">
                 </form>
             @elseif($status === 'working')
-                <form class="clock-out__form" action="{{ route('attendance.clock-out') }}" method="post">
+                <form class="clock-out__form" action="{{ route('attendance.clockOut') }}" method="post">
                     @csrf
                     <input class="clock-out__form-input" type="submit" value="退勤">
                 </form>
-                <form class="break-start__form" action="{{ route('attendance.break-start') }}" method="post">
+                <form class="break-start__form" action="{{ route('attendance.breakStart') }}" method="post">
                     @csrf
                     <input class="break-start__form-input" type="submit" value="休憩入">
                 </form>
             @elseif($status === 'on_break')
-                <form class="break-end__form" action="{{ route('attendance.break-end') }}" method="post">
+                <form class="break-end__form" action="{{ route('attendance.breakEnd') }}" method="post">
                     @csrf
                     <input class="break-end__form-input" type="submit" value="休憩戻">
                 </form>

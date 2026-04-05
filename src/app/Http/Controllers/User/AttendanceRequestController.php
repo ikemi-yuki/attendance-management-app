@@ -16,11 +16,11 @@ class AttendanceRequestController extends Controller
         $this->service = $service;
     }
 
-    public function store(UpdateAttendanceRequest $request, $id)
+    public function apply(UpdateAttendanceRequest $request, $id)
     {
         $attendance = Attendance::findOrFail($id);
 
-        $this->service->store(
+        $this->service->apply(
             $request->validated(),
             $attendance
         );

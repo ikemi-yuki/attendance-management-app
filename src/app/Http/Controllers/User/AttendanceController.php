@@ -26,20 +26,6 @@ class AttendanceController extends Controller
         $this->attendanceRequestService = $attendanceRequestService;
     }
 
-    public function clockIn()
-    {
-        $this->attendanceService->clockIn(auth()->user());
-
-        return redirect()->route('clock');
-    }
-
-    public function clockOut()
-    {
-        $this->attendanceService->clockOut(auth()->user());
-
-        return redirect()->route('clock');
-    }
-
     public function index(Request $request)
     {
         $month = $this->dateService->resolveMonth($request->month);

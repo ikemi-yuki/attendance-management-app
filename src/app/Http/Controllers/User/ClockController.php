@@ -7,7 +7,7 @@ use App\Services\AttendanceService;
 
 class ClockController extends Controller
 {
-    private $attendanceService;
+    private AttendanceService $attendanceService;
 
     public function __construct(AttendanceService $attendanceService)
     {
@@ -19,5 +19,19 @@ class ClockController extends Controller
         $status = $this->attendanceService->getStatus(auth()->user());
 
         return view('user.attendances.clock', compact('status'));
+    }
+
+    public function clockIn()
+    {
+        $this->attendanceService->clockIn(auth()->user());
+
+        return redirect()->route('clock');
+    }
+
+    public function clockOut()
+    {
+        $this->attendanceService->clockOut(auth()->user());
+
+        return redirect()->route('clock');
     }
 }

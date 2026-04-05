@@ -45,7 +45,7 @@ class AttendanceBreakTest extends TestCase
     public function test_休憩入ボタンが正しく機能する()
     {
         Carbon::setTestNow($this->firstBreakStartTime());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
@@ -54,14 +54,14 @@ class AttendanceBreakTest extends TestCase
             'clock_out' => null,
         ]);
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
         $response->assertSee('休憩入');
-        $response->assertSee(route('attendance.break-start'));
+        $response->assertSee(route('attendance.breakStart'));
 
-        $response = $this->post(route('attendance.break-start'));
+        $response = $this->post(route('attendance.breakStart'));
         $response->assertRedirect(route('clock'));
 
         $this->assertDatabaseHas('attendance_breaks', [
@@ -76,7 +76,7 @@ class AttendanceBreakTest extends TestCase
     public function test_休憩入は一日に何回でもできる()
     {
         Carbon::setTestNow($this->firstBreakStartTime());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
@@ -85,15 +85,15 @@ class AttendanceBreakTest extends TestCase
             'clock_out' => null,
         ]);
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
 
-        $response = $this->post(route('attendance.break-start'));
+        $response = $this->post(route('attendance.breakStart'));
 
         Carbon::setTestNow($this->breakEndTime());
-        $response = $this->post(route('attendance.break-end'));
+        $response = $this->post(route('attendance.breakEnd'));
 
         $this->assertDatabaseHas('attendance_breaks', [
             'attendance_id' => $attendance->id,
@@ -103,13 +103,13 @@ class AttendanceBreakTest extends TestCase
 
         $response = $this->get(route('clock'));
         $response->assertSee('休憩入');
-        $response->assertSee(route('attendance.break-start'));
+        $response->assertSee(route('attendance.breakStart'));
     }
 
     public function test_休憩戻ボタンが正しく機能する()
     {
         Carbon::setTestNow($this->firstBreakStartTime());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
@@ -118,20 +118,20 @@ class AttendanceBreakTest extends TestCase
             'clock_out' => null,
         ]);
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
 
-        $response = $this->post(route('attendance.break-start'));
+        $response = $this->post(route('attendance.breakStart'));
 
         $response = $this->get(route('clock'));
         $response->assertSee('休憩中');
         $response->assertSee('休憩戻');
-        $response->assertSee(route('attendance.break-end'));
+        $response->assertSee(route('attendance.breakEnd'));
 
         Carbon::setTestNow($this->breakEndTime());
-        $response = $this->post(route('attendance.break-end'));
+        $response = $this->post(route('attendance.breakEnd'));
         $response->assertRedirect(route('clock'));
 
         $this->assertDatabaseHas('attendance_breaks', [
@@ -147,7 +147,7 @@ class AttendanceBreakTest extends TestCase
     public function test_休憩戻は一日に何回でもできる()
     {
         Carbon::setTestNow($this->firstBreakStartTime());
-        $user =User::factory()->create();
+        $user = User::factory()->create();
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
@@ -156,22 +156,22 @@ class AttendanceBreakTest extends TestCase
             'clock_out' => null,
         ]);
 
-        $this ->actingAs($user);
+        $this->actingAs($user);
 
         $response = $this->get(route('clock'));
         $response->assertSee('出勤中');
 
-        $response = $this->post(route('attendance.break-start'));
+        $response = $this->post(route('attendance.breakStart'));
 
         Carbon::setTestNow($this->breakEndTime());
-        $response = $this->post(route('attendance.break-end'));
+        $response = $this->post(route('attendance.breakEnd'));
 
         Carbon::setTestNow($this->secondBreakStartTime());
-        $response = $this->post(route('attendance.break-start'));
+        $response = $this->post(route('attendance.breakStart'));
 
         $response = $this->get(route('clock'));
         $response->assertSee('休憩戻');
-        $response->assertSee(route('attendance.break-end'));
+        $response->assertSee(route('attendance.breakEnd'));
 
         $this->assertDatabaseCount('attendance_breaks', 2);
         $this->assertDatabaseHas('attendance_breaks', [

@@ -59,7 +59,7 @@ class AttendanceCorrectionTest extends TestCase
 
         $response = $this->get(route('attendance.show', ['id' => $attendance->id]));
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '17:00',
             'clock_out' => '09:00',
             'note' => '電車遅延のため',
@@ -90,7 +90,7 @@ class AttendanceCorrectionTest extends TestCase
 
         $response = $this->get(route('attendance.show', ['id' => $attendance->id]));
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '09:00',
             'clock_out' => '17:00',
             'breaks' => [
@@ -126,7 +126,7 @@ class AttendanceCorrectionTest extends TestCase
 
         $response = $this->get(route('attendance.show', ['id' => $attendance->id]));
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '09:00',
             'clock_out' => '17:00',
             'breaks' => [
@@ -157,7 +157,7 @@ class AttendanceCorrectionTest extends TestCase
 
         $response = $this->get(route('attendance.show', ['id' => $attendance->id]));
 
-        $response = $this->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '09:00',
             'clock_out' => '17:00',
             'note' => '',

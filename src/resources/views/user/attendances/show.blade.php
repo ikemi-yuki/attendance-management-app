@@ -19,7 +19,7 @@
             <p class="pending-message">*承認待ちのため修正はできません。</p>
         @else
             <x-ui.detail-edit-table
-                :action="route('attendance.store', ['id' => $attendance->id])"
+                :action="route('attendance.apply', ['id' => $attendance->id])"
                 method=""
                 :attendance="$attendance"
                 :breaks="$attendance->breaks"

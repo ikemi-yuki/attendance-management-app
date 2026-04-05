@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AttendanceCorrectionStoreTest extends TestCase
+class AttendanceCorrectionApplyTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -84,7 +84,7 @@ class AttendanceCorrectionStoreTest extends TestCase
             'break_end' => $this->breakEndTime(),
         ]);
 
-        $response = $this->actingAs($user)->followingRedirects()->post(route('attendance.store', ['id' => $attendance->id]),[
+        $response = $this->actingAs($user)->followingRedirects()->post(route('attendance.apply', ['id' => $attendance->id]),[
             'clock_in' => '10:00',
             'clock_out' => '18:00',
             'breaks' => [
