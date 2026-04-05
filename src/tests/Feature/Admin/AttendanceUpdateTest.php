@@ -171,6 +171,6 @@ class AttendanceUpdateTest extends TestCase
             'note' => '',
         ]);
 
-        $response->assertSee('備考を入力してください');
+        $response->assertSee('備考を記入してください');
     }
 }

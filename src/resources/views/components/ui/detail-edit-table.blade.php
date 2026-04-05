@@ -78,7 +78,7 @@
             </tr>
             <tr class="table__row">
                 <th class="table__header">備考</th>
-                <td class="table__data--text">
+                <td class="table__data">
                     <textarea class="table__data-textarea" name="note">{{ old('note', $attendance->note) }}</textarea>
                     <div class="error">
                         @error('note')

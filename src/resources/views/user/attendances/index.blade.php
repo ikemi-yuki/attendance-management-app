@@ -21,7 +21,7 @@
         <div class="table">
             <x-ui.list-table>
                 <x-slot name="header">
-                    <th class="table__header">日付</th>
+                    <th class="table__header--date">日付</th>
                     <th class="table__header">出勤</th>
                     <th class="table__header">退勤</th>
                     <th class="table__header">休憩</th>
@@ -30,7 +30,7 @@
                 </x-slot>
                 @foreach ($rows as $row)
                     <tr class="table__row">
-                        <td class="table__data">{{ $row->date() }}</td>
+                        <td class="table__data--date">{{ $row->date() }}</td>
                         <td class="table__data">{{ $row->clockIn() }}</td>
                         <td class="table__data">{{ $row->clockOut() }}</td>
                         <td class="table__data">{{ $row->breakTime() }}</td>
