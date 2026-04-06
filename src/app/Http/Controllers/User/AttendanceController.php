@@ -36,7 +36,7 @@ class AttendanceController extends Controller
 
         $dates = $this->dateService->getDatesInMonth($start, $end);
 
-        $attendances = $this->attendanceService->getMonthlyAttendances(Auth::id(), $start, $end);
+        $attendances = $this->attendanceService->getMonthlyAttendances(auth()->id(), $start, $end);
 
         $rows = collect($dates)->map(
             fn ($date) => new MonthlyAttendanceRowViewModel(
