@@ -1,3 +1,10 @@
+@props([
+    'attendance',
+    'attendanceRequest',
+    'requestBreaks',
+    'showEmptyBreakRow' => false,
+])
+
 <div class="table">
     <table class="table__inner">
         <tr class="table__row">
@@ -33,6 +40,12 @@
                 </td>
             </tr>
         @endforeach
+        @if($showEmptyBreakRow)
+            <tr class="table__row">
+                <th class="table__header">{{ $requestBreaks->count() === 0 ? '休憩' : '休憩'.($requestBreaks->count() + 1) }}</th>
+                <td class="table__data"></td>
+            </tr>
+        @endif
         <tr class="table__row">
             <th class="table__header">備考</th>
             <td class="table__data--text">

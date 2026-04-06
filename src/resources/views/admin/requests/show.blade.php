@@ -14,6 +14,7 @@
             :attendance="$attendanceRequest->attendance"
             :attendanceRequest="$attendanceRequest"
             :requestBreaks="$attendanceRequest->requestBreaks"
+            :showEmptyBreakRow="true"
         />
         @if($hasPendingRequest && $attendanceRequest)
             <form class="form" action="{{ route('admin.request.approve', ['attendance_correct_request_id' => $attendanceRequest->id] ) }}" method="post">

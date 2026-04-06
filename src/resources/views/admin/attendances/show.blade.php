@@ -22,7 +22,7 @@
         @else
             <x-ui.detail-edit-table
                 :action="route('admin.attendance.update', ['id' => $attendance->id])"
-                :method="method_field('PATCH')"
+                method="PATCH"
                 :attendance="$attendance"
                 :breaks="$attendance->breaks"
             />

@@ -1,3 +1,8 @@
+@props([
+    'action',
+    'buttonText',
+])
+
 <form class="form" action="{{ $action }}" method="post">
     @csrf
     <div class="form__group">

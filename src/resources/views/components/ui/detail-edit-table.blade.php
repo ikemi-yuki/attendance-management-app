@@ -1,5 +1,14 @@
+@props([
+    'action',
+    'method' => 'POST',
+    'attendance',
+    'breaks',
+])
+
 <form class="form" action="{{ $action }}" method="post">
-    {{ $method }}
+    @if($method !== 'POST')
+        @method($method)
+    @endif
     @csrf
     <div class="table">
         <table class="table__inner">

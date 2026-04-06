@@ -1,3 +1,11 @@
+@props([
+    'previousUrl',
+    'previousText',
+    'label',
+    'nextUrl',
+    'nextText',
+])
+
 <div class="attendance-list__table-header">
     <a class="attendance-list__date-link" href="{{ $previousUrl }}">← {{ $previousText }}</a>
     <span class="attendance-list__date">
