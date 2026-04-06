@@ -163,12 +163,13 @@
 
     .staff-table__header:first-child,
     .staff-table__data:first-child {
-        padding-left: 50px;
+        padding-left: 20px;
     }
 
     .staff-table__header:last-child,
     .staff-table__data:last-child {
-        padding-right: 40px;
+        width: 20%;
+        padding-right: 30px;
     }
 
     .request-table__header,
